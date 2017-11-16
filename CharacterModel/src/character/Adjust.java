@@ -39,7 +39,7 @@ public class Adjust {
 			return prior+adjustValue;
 		if (adjustmentType == 2)
 			return prior-adjustValue;
-		return -404;
+		return prior;
 	}
 	
 	public String toString() {

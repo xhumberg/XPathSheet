@@ -1,0 +1,63 @@
+package character;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class Skill {
+	private int ranks;
+	private int temp;
+	private boolean classSkill;
+	private List<Adjust> adjustments;
+	private int bonus;
+	private Stat stat;
+	private List<String> specials;
+	private boolean trainedOnly;
+	
+	public Skill(Stat stat, boolean trainedOnly) {
+		this.stat = stat;
+		ranks = 0;
+		temp = 0;
+		classSkill = false;
+		adjustments = new ArrayList<Adjust>();
+		this.trainedOnly = trainedOnly;
+	}
+	public int getRanks() {
+		return ranks;
+	}
+	public void addRank() {
+		ranks++;
+	}
+	public int getTemp() {
+		return temp;
+	}
+	public void setTemp(int temp) {
+		this.temp = temp;
+	}
+	public boolean isClassSkill() {
+		return classSkill;
+	}
+	public void makeClassSkill() {
+		classSkill = true;
+	}
+	public int getBonus() {
+		recalculate();
+		return bonus;
+	}
+	public void recalculate() {
+		if (trainedOnly && ranks < 1) {
+			bonus = -999;
+			return;
+		}
+		bonus = ranks + temp + stat.getMod();
+		if (classSkill && ranks > 0)
+			bonus += 3;
+		for (Adjust adjust : adjustments) 
+			bonus = adjust.applyAdjustment(bonus);
+	}
+	public String toString() {
+		return "" + bonus + specials.toString();
+	}
+	public void addAdjust(Adjust addMe) {
+		adjustments.add(addMe);
+	}
+}

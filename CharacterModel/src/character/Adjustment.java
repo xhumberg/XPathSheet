@@ -47,13 +47,37 @@ public class Adjustment {
 			action = 2;
 			break;
 		default:
-			action = 1;
-			break;
+			return;
 		}
 		
 		Adjust newAdjustment = new Adjust(stat, id, action, value);
 		
 		character.addAbilityScoreAdjust(stat, newAdjustment);
+		adjustments.add(newAdjustment);
+	}
+
+	public void addAdjustSkill(String skill, String type, int value, Character character) {
+		int action;
+		switch (type.toLowerCase()) {
+		case "set":
+			action = 0;
+			break;
+		case "add":
+			action = 1;
+			break;
+		case "subtract":
+			action = 2;
+			break;
+		case "add proficiency":
+			action = 3;
+			character.addClassSkill(skill);
+		default:
+			return;
+		}
+		
+		Adjust newAdjustment = new Adjust(skill, id, action, value);
+		
+		character.addAdjustSkill(skill, newAdjustment);
 		adjustments.add(newAdjustment);
 	}
 	

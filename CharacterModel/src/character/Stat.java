@@ -58,12 +58,7 @@ class Stat {
 	}
 	
 	public String toString() {
-		StringBuilder str = new StringBuilder();
-		str.append("Total: " + score + "  Mod: " + mod + "  Base: " + base + "  Temp: " + temp);
-//		for(Adjust adj : adjustments) {
-//			str.append("\n" + adj.toString());
-//		}
-		return str.toString();
+		return score + " (" + mod + ")";
 		
 	}
 }
