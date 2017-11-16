@@ -6,18 +6,32 @@ import java.util.List;
 public class Character {
 	private String name;
 	private Adjustment race;
+	private String type;
 	private List<Adjustment> classes;
 	int level;
+	int size;
+	
+	/*
+	 * Alignment
+	 */
 	private boolean lawful;
 	private boolean chaotic;
 	private boolean good;
 	private boolean evil;
+	
+	/*
+	 * STATS
+	 */
 	private Stat strength;
 	private Stat dexterity;
 	private Stat constitution;
 	private Stat intelligence;
 	private Stat wisdom;
 	private Stat charisma;
+	
+	/*
+	 * SKILLS
+	 */
 	private Skill acrobatics;
 	private Skill appraise;
 	private Skill bluff;
@@ -57,10 +71,6 @@ public class Character {
 	private Skill survival;
 	private Skill swim;
 	private Skill useMagicDevice;
-	
-	
-	//TODO: Remove this
-	private List<Adjustment> adjustments;
 	
 	private int newAdjustmentIndex;
 	
@@ -120,45 +130,12 @@ public class Character {
 		swim = new Skill(strength, false);
 		useMagicDevice = new Skill(charisma, true);
 		
-		//TODO: Remove this
-		adjustments = new ArrayList<Adjustment>();
-		
-		newAdjustmentIndex = 1;
+		newAdjustmentIndex = 21;
 	}
 	
-	private Stat getAbility(String ability) {
-		switch(ability.toLowerCase()) {
-		case "strength":
-			return strength;
-		case "dexterity":
-			return dexterity;
-		case "constitution":
-			return constitution;
-		case "intelligence":
-			return intelligence;
-		case "wisdom":
-			return wisdom;
-		case "charisma":
-			return charisma;
-		}
-		return null;
-	}
-	public int getAbilityScore(String ability) {
-		return getAbility(ability).getScore();
-	}
-	public int getAbilityMod(String ability) {
-		return getAbility(ability).getMod();
-	}
-	public void setAbilityScoreBase(String ability, int newBase) {
-		getAbility(ability).setBase(newBase);
-	}	
-	public void setAbilityScoreTemp(String ability, int newTemp) {
-		getAbility(ability).setTemp(newTemp);
-	}
-	public void addAbilityScoreAdjust(String ability, Adjust adjustment) {
-		getAbility(ability).addAdjust(adjustment);
-	}
-
+	/*
+	 * GETTERS
+	 */
 	public Skill getSkill(String skill) {
 		switch(skill.toLowerCase()) {
 		case "acrobatics":
@@ -251,48 +228,111 @@ public class Character {
 	public int getSkillRanks(String skill) {
 		return getSkill(skill).getRanks();
 	}
+	private Stat getAbility(String ability) {
+		switch(ability.toLowerCase()) {
+		case "strength":
+			return strength;
+		case "dexterity":
+			return dexterity;
+		case "constitution":
+			return constitution;
+		case "intelligence":
+			return intelligence;
+		case "wisdom":
+			return wisdom;
+		case "charisma":
+			return charisma;
+		}
+		return null;
+	}
+	public int getAbilityScore(String ability) {
+		return getAbility(ability).getScore();
+	}
+	public int getAbilityMod(String ability) {
+		return getAbility(ability).getMod();
+	}
+	public String getAlignment() {
+		StringBuilder str = new StringBuilder();
+		
+		if (lawful)
+			str.append("L");
+		else if (chaotic)
+			str.append("C");
+		else
+			str.append("N");
+		
+		if (good)
+			str.append("G");
+		else if (evil)
+			str.append("E");
+		else {
+			if (!str.toString().equals("N"))
+				str.append("N");
+		}
+		
+		return str.toString();
+	}
+	public String getType() {
+		return type;
+	}
+	
+	/*
+	 * SETTERS
+	 */
+	public void setAbilityScoreBase(String ability, int newBase) {
+		getAbility(ability).setBase(newBase);
+	}	
+	public void setAbilityScoreTemp(String ability, int newTemp) {
+		getAbility(ability).setTemp(newTemp);
+	}
 	public void addSkillRank(String skill) {
 		getSkill(skill).addRank();
 	}
 	public void addClassSkill(String skill) {
 		getSkill(skill).makeClassSkill();
 	}
+	public void setName(String name) {
+		this.name = name;
+	}
+	public void setAlignment(boolean lawful, boolean chaotic, boolean good, boolean evil) {
+		this.lawful = false;
+		this.chaotic = false;
+		if (lawful)
+			this.lawful = true;
+		else if (chaotic)
+			this.chaotic = true;
+		
+		this.good = false;
+		this.evil = false;
+		if (good)
+			this.good = true;
+		else if (evil)
+			this.evil = true;
+	}
+	public void setType(String newType) {
+		type = newType;
+	}
+
+	
+	/*
+	 * ADJUSTERS
+	 */
+	public void addAbilityScoreAdjust(String ability, Adjust adjustment) {
+		getAbility(ability).addAdjust(adjustment);
+	}
 	public void addAdjustSkill(String skill, Adjust adjustment) {
 		getSkill(skill).addAdjust(adjustment);
 	}
 	
-	public String getAlignment() {
-		StringBuilder str = new StringBuilder();
-		
-		if (lawful)
-			str.append("Lawful ");
-		else if (chaotic)
-			str.append("Chaotic ");
-		else
-			str.append("Neutral ");
-		
-		if (good)
-			str.append("Good");
-		else if (evil)
-			str.append("Evil");
-		else {
-			if (str.toString().equals("Neutral ")) {
-				str.delete(0, str.length());
-				str.append("True Neutral");
-			}
-			else
-				str.append("Neutral");
-		}
-		
-		return str.toString();
-	}
-	
+	/*
+	 * STRING METHODS
+	 */
 	public String toString() {
 		StringBuilder str = new StringBuilder();
 		str.append(name + "\n");
 		str.append(race.toString().split(":")[0] + " ");
 		str.append(getClassString() + "\n");
-		str.append(getAlignment() + "\n");
+		str.append(getAlignment() + " " + type + "\n");
 		str.append("STR: " + strength  + "\n");
 		str.append("DEX: " + dexterity + "\n");
 		str.append("CON: " + constitution + "\n");
@@ -340,7 +380,6 @@ public class Character {
 		str.append("Use Magic Device: " + (useMagicDevice.getBonus() == -999 ? "No" : useMagicDevice) + "  ");
 		return str.toString();
 	}
-
 	private String getClassString() {
 		StringBuilder str = new StringBuilder();
 		
@@ -353,49 +392,18 @@ public class Character {
 		//TODO: Support multiclassing
 	}
 
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public void setAlignment(boolean lawful, boolean chaotic, boolean good, boolean evil) {
-		this.lawful = false;
-		this.chaotic = false;
-		if (lawful)
-			this.lawful = true;
-		else if (chaotic)
-			this.chaotic = true;
-		
-		this.good = false;
-		this.evil = false;
-		if (good)
-			this.good = true;
-		else if (evil)
-			this.evil = true;
-	}
-
-	Adjustment createAdjustment() {
-		Adjustment newAdj = new Adjustment(newAdjustmentIndex);
-		newAdjustmentIndex++;
-		adjustments.add(newAdj);
-		return newAdj;
-	}
-
+	/*
+	 * ADJUSTMENT CREATION METHODS
+	 */
 	Adjustment getRace() {
 		return race;
 	}
-	
-	Adjustment getAdjustment(int id) {
-		return adjustments.get(id);
-	}
-
 	Adjustment addLevel() {
 		Adjustment newLevel = new Adjustment(++level);
 		classes.add(newLevel);
 		return newLevel;
 	}
-	
 	Adjustment getLevel(int level) {
 		return classes.get(level-1);
 	}
-
 }

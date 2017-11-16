@@ -91,4 +91,11 @@ public class Adjustment {
 		}
 		return str.toString();
 	}
+
+	public void changeType(String newType, Character gnome) {
+		Adjust newAdjustment = new Adjust("type", id, newType);
+		
+		gnome.setType(newType);
+		adjustments.add(newAdjustment);
+	}
 }
