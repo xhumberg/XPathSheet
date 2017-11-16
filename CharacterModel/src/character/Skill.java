@@ -20,6 +20,7 @@ public class Skill {
 		classSkill = false;
 		adjustments = new ArrayList<Adjust>();
 		this.trainedOnly = trainedOnly;
+		specials = new ArrayList<String>();
 	}
 	public int getRanks() {
 		return ranks;
@@ -55,7 +56,8 @@ public class Skill {
 			bonus = adjust.applyAdjustment(bonus);
 	}
 	public String toString() {
-		return "" + bonus + specials.toString();
+		recalculate();
+		return "" + bonus + (specials.size() > 0 ? specials.toString() : "");
 	}
 	public void addAdjust(Adjust addMe) {
 		adjustments.add(addMe);

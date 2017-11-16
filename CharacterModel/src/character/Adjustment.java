@@ -68,7 +68,7 @@ public class Adjustment {
 		case "subtract":
 			action = 2;
 			break;
-		case "add proficiency":
+		case "class skill":
 			action = 3;
 			character.addClassSkill(skill);
 		default:

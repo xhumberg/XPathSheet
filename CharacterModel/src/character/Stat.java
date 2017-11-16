@@ -58,6 +58,7 @@ class Stat {
 	}
 	
 	public String toString() {
+		recalculate();
 		return score + " (" + mod + ")";
 		
 	}
