@@ -28,6 +28,9 @@ public class Skill {
 	public void addRank() {
 		ranks++;
 	}
+	public void setRanks(int ranks) {
+		this.ranks = ranks;
+	}
 	public int getTemp() {
 		return temp;
 	}

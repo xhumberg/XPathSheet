@@ -8,9 +8,11 @@ public class Character {
 	private Adjustment race;
 	private String type;
 	private List<Adjustment> classes;
-	int level;
+	private List<Adjustment> feats;
+	private int level;
 	private Stat speed;
 	private Stat size;
+	private Skill initiative;
 	
 	/*
 	 * Alignment
@@ -79,6 +81,7 @@ public class Character {
 		name = "No Name";
 		race = new Adjustment(0);
 		classes = new ArrayList<Adjustment>();
+		feats = new ArrayList<Adjustment>();
 		speed = new Stat();
 		speed.setBase(30);
 		level = 0;
@@ -88,12 +91,15 @@ public class Character {
 		chaotic = false;
 		good = false;
 		evil = false;
+		
 		strength = new Stat();
 		dexterity = new Stat();
 		constitution = new Stat();
 		intelligence = new Stat();
 		wisdom = new Stat();
 		charisma = new Stat();
+		
+		initiative = new Skill(dexterity, false);
 		
 		acrobatics = new Skill(dexterity, false);
 		appraise = new Skill(intelligence, false);
@@ -329,6 +335,9 @@ public class Character {
 	public void setSpeed(int speed) {
 		this.speed.setBase(speed);
 	}
+	public void setTempInitiative(int temp) {
+		initiative.setTemp(temp);
+	}
 	
 	/*
 	 * ADJUSTERS
@@ -342,6 +351,9 @@ public class Character {
 	public void addAdjustSpeed(Adjust adjustment) {
 		speed.addAdjust(adjustment);
 	}
+	public void addAdjustInitiative(Adjust adjustment) {
+		initiative.addAdjust(adjustment);
+	}
 	
 	/*
 	 * STRING METHODS
@@ -354,6 +366,7 @@ public class Character {
 		str.append(race.toString().split(":")[0] + " ");
 		str.append(getClassString() + "\n");
 		str.append(getAlignment() + " " + getSizeString() + " " + type + "\n");
+		str.append("Initiative: " + initiative.getBonus() + "\n");
 		
 		str.append("\n" + line() + "\n");
 		str.append("DEFENSE" + "\n");
@@ -466,5 +479,10 @@ public class Character {
 	}
 	Adjustment getLevel(int level) {
 		return classes.get(level-1);
+	}
+	Adjustment addFeat() {
+		Adjustment newFeat = new Adjustment(newAdjustmentIndex++);
+		feats.add(newFeat);
+		return newFeat;
 	}
 }

@@ -102,4 +102,13 @@ public class Adjustment {
 		character.addAdjustSpeed(newAdjustment);
 		adjustments.add(newAdjustment);
 	}
+
+	public void addAdjustInitiative(String type, int value, Character character) {
+		int action = decodeType(type);
+		
+		Adjust newAdjustment = new Adjust("Initiative", id, action, value);
+		
+		character.addAdjustInitiative(newAdjustment);
+		adjustments.add(newAdjustment);
+	}
 }
