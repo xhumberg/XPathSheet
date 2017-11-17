@@ -9,8 +9,8 @@ public class Character {
 	private String type;
 	private List<Adjustment> classes;
 	int level;
-	int size;
-	public List<Adjust> speedAdjustments;
+	private Stat speed;
+	private Stat size;
 	
 	/*
 	 * Alignment
@@ -74,15 +74,16 @@ public class Character {
 	private Skill useMagicDevice;
 	
 	private int newAdjustmentIndex;
-	private int speed;
 	
 	public Character() {
 		name = "No Name";
 		race = new Adjustment(0);
 		classes = new ArrayList<Adjustment>();
-		speedAdjustments = new ArrayList<Adjust>();
+		speed = new Stat();
+		speed.setBase(30);
 		level = 0;
-		size = 0;
+		size = new Stat();
+		size.setBase(0);
 		lawful = false;
 		chaotic = false;
 		good = false;
@@ -280,12 +281,10 @@ public class Character {
 		return type;
 	}
 	public int getSize() {
-		return size;
+		return size.getScore();
 	}
 	public int getSpeed() {
-		for(Adjust adjust : speedAdjustments)
-			speed = adjust.applyAdjustment(speed);
-		return speed;
+		return speed.getScore();
 	}
 
 	/*
@@ -325,10 +324,10 @@ public class Character {
 		type = newType;
 	}
 	public void setSize(int size) {
-		this.size = size;
+		this.size.setBase(size);
 	}
 	public void setSpeed(int speed) {
-		this.speed = speed;
+		this.speed.setBase(speed);
 	}
 	
 	/*
@@ -341,7 +340,7 @@ public class Character {
 		getSkill(skill).addAdjust(adjustment);
 	}
 	public void addAdjustSpeed(Adjust adjustment) {
-		speedAdjustments.add(adjustment);
+		speed.addAdjust(adjustment);
 	}
 	
 	/*
@@ -427,7 +426,7 @@ public class Character {
 		//TODO: Support multiclassing
 	}
 	private String getSizeString() {
-		switch (size) {
+		switch (size.getBase()) {
 		case -1:
 			return "Small";
 		case -2:
