@@ -10,6 +10,7 @@ public class Character {
 	private List<Adjustment> classes;
 	int level;
 	int size;
+	public List<Adjust> speedAdjustments;
 	
 	/*
 	 * Alignment
@@ -73,12 +74,15 @@ public class Character {
 	private Skill useMagicDevice;
 	
 	private int newAdjustmentIndex;
+	private int speed;
 	
 	public Character() {
 		name = "No Name";
 		race = new Adjustment(0);
 		classes = new ArrayList<Adjustment>();
+		speedAdjustments = new ArrayList<Adjust>();
 		level = 0;
+		size = 0;
 		lawful = false;
 		chaotic = false;
 		good = false;
@@ -275,7 +279,15 @@ public class Character {
 	public String getType() {
 		return type;
 	}
-	
+	public int getSize() {
+		return size;
+	}
+	public int getSpeed() {
+		for(Adjust adjust : speedAdjustments)
+			speed = adjust.applyAdjustment(speed);
+		return speed;
+	}
+
 	/*
 	 * SETTERS
 	 */
@@ -312,7 +324,12 @@ public class Character {
 	public void setType(String newType) {
 		type = newType;
 	}
-
+	public void setSize(int size) {
+		this.size = size;
+	}
+	public void setSpeed(int speed) {
+		this.speed = speed;
+	}
 	
 	/*
 	 * ADJUSTERS
@@ -323,21 +340,39 @@ public class Character {
 	public void addAdjustSkill(String skill, Adjust adjustment) {
 		getSkill(skill).addAdjust(adjustment);
 	}
+	public void addAdjustSpeed(Adjust adjustment) {
+		speedAdjustments.add(adjustment);
+	}
 	
 	/*
 	 * STRING METHODS
 	 */
 	public String toString() {
 		StringBuilder str = new StringBuilder();
+		str.append(line() + "\n");
 		str.append(name + "\n");
+		str.append(line() + "\n");
 		str.append(race.toString().split(":")[0] + " ");
 		str.append(getClassString() + "\n");
-		str.append(getAlignment() + " " + type + "\n");
-		str.append("STR: " + strength  + "\n");
-		str.append("DEX: " + dexterity + "\n");
-		str.append("CON: " + constitution + "\n");
-		str.append("INT: " + intelligence + "\n");
-		str.append("WIS: " + wisdom + "\n");
+		str.append(getAlignment() + " " + getSizeString() + " " + type + "\n");
+		
+		str.append("\n" + line() + "\n");
+		str.append("DEFENSE" + "\n");
+		str.append(line() + "\n");
+		
+		str.append("\n" + line() + "\n");
+		str.append("OFFENSE" + "\n");
+		str.append(line() + "\n");
+		str.append("Speed: " + getSpeed() + " ft.\n");
+		
+		str.append("\n" + line() + "\n");
+		str.append("STATISTICS" + "\n");
+		str.append(line() + "\n");
+		str.append("STR: " + strength  + ", ");
+		str.append("DEX: " + dexterity + ", ");
+		str.append("CON: " + constitution + ", ");
+		str.append("INT: " + intelligence + ", ");
+		str.append("WIS: " + wisdom + ", ");
 		str.append("CHA: " + charisma + "\n");
 		str.append("Acrobatics: " + acrobatics + "  ");
 		str.append("Appraise: " + appraise + "  ");
@@ -391,7 +426,34 @@ public class Character {
 		return str.toString();
 		//TODO: Support multiclassing
 	}
-
+	private String getSizeString() {
+		switch (size) {
+		case -1:
+			return "Small";
+		case -2:
+			return "Tiny";
+		case -4:
+			return "Diminutive";
+		case -8:
+			return "Fine";
+		case 0:
+			return "Medium";
+		case 1:
+			return "Large";
+		case 2:
+			return "Huge";
+		case 4:
+			return "Gargantuan";
+		case 8:
+			return "Colossal";
+		default:
+			return "INVALID SIZE";
+		}
+	}
+	private String line() {
+		return "----------------------------------------";
+	}
+	
 	/*
 	 * ADJUSTMENT CREATION METHODS
 	 */

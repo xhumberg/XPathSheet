@@ -35,20 +35,7 @@ public class Adjustment {
 	}
 	
 	public void addAdjustStat(String stat, String type, int value, Character character) {
-		int action;
-		switch (type.toLowerCase()) {
-		case "set":
-			action = 0;
-			break;
-		case "add":
-			action = 1;
-			break;
-		case "subtract":
-			action = 2;
-			break;
-		default:
-			return;
-		}
+		int action = decodeType(type);
 		
 		Adjust newAdjustment = new Adjust(stat, id, action, value);
 		
@@ -56,24 +43,25 @@ public class Adjustment {
 		adjustments.add(newAdjustment);
 	}
 
-	public void addAdjustSkill(String skill, String type, int value, Character character) {
-		int action;
+	private int decodeType(String type) {
 		switch (type.toLowerCase()) {
 		case "set":
-			action = 0;
-			break;
+			return 0;
 		case "add":
-			action = 1;
-			break;
+			return 1;
 		case "subtract":
-			action = 2;
-			break;
+			return 2;
 		case "class skill":
-			action = 3;
-			character.addClassSkill(skill);
+			return 3;
 		default:
-			return;
+			return - 1;
 		}
+	}
+	
+	public void addAdjustSkill(String skill, String type, int value, Character character) {
+		int action = decodeType(type);
+		if (action == 3)
+			character.addClassSkill(skill);
 		
 		Adjust newAdjustment = new Adjust(skill, id, action, value);
 		
@@ -92,10 +80,26 @@ public class Adjustment {
 		return str.toString();
 	}
 
-	public void changeType(String newType, Character gnome) {
+	public void changeType(String newType, Character character) {
 		Adjust newAdjustment = new Adjust("type", id, newType);
 		
-		gnome.setType(newType);
+		character.setType(newType);
+		adjustments.add(newAdjustment);
+	}
+
+	public void setSize(int size, Character character) {
+		Adjust newAdjustment = new Adjust("size", id, 0, size);
+		
+		character.setSize(size);
+		adjustments.add(newAdjustment);
+	}
+
+	public void addAdjustSpeed(String type, int value, Character character) {
+		int action = decodeType(type);
+		
+		Adjust newAdjustment = new Adjust("speed", id, action, value);
+		
+		character.addAdjustSpeed(newAdjustment);
 		adjustments.add(newAdjustment);
 	}
 }
