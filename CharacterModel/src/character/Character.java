@@ -386,6 +386,11 @@ public class Character {
 		str.append("INT: " + intelligence + ", ");
 		str.append("WIS: " + wisdom + ", ");
 		str.append("CHA: " + charisma + "\n");
+		str.append("Feats: ");
+		for(Adjustment adjustment : feats) {
+			str.append(adjustment.getName() + "  ");
+		}
+		str.append("\n");
 		str.append("Acrobatics: " + acrobatics + "  ");
 		str.append("Appraise: " + appraise + "  ");
 		str.append("Bluff: " + bluff + "  ");
