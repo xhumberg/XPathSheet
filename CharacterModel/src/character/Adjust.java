@@ -6,6 +6,7 @@ public class Adjust {
 	private int adjustValue;
 	private String whatAdjust; // Value adjust should be something like
 								// "Strength" or "Stealth"
+	
 	private String description; // For adjustments that aren't as easily defined
 								// as "add 3 to stealth"
 
@@ -59,7 +60,7 @@ public class Adjust {
 	}
 
 	public String toString() {
-		StringBuilder str = new StringBuilder(" - ");
+		StringBuilder str = new StringBuilder();
 		if (description == null) {
 			str.append(whatAdjust + ": ");
 			if (adjustmentType == 0)
@@ -68,10 +69,14 @@ public class Adjust {
 				str.append("Add ");
 			else if (adjustmentType == 2)
 				str.append("Subtract ");
+			else if (adjustmentType == 3) {
+				str.append("Make class skill");
+				return str.toString();
+			}
 			str.append(adjustValue);
 			return str.toString();
 		} else {
-			str.append(whatAdjust + ": ");
+			str.append(whatAdjust + " ");
 			str.append(description);
 			return str.toString();
 		}

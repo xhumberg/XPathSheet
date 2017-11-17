@@ -9,6 +9,7 @@ public class Character {
 	private String type;
 	private List<Adjustment> classes;
 	private List<Adjustment> feats;
+	private List<Adjust> senses;
 	private int level;
 	private Stat speed;
 	private Stat size;
@@ -82,6 +83,8 @@ public class Character {
 		race = new Adjustment(0);
 		classes = new ArrayList<Adjustment>();
 		feats = new ArrayList<Adjustment>();
+		senses = new ArrayList<Adjust>();
+		newAdjustmentIndex = 22;
 		speed = new Stat();
 		speed.setBase(30);
 		level = 0;
@@ -141,7 +144,6 @@ public class Character {
 		swim = new Skill(strength, false);
 		useMagicDevice = new Skill(charisma, true);
 		
-		newAdjustmentIndex = 21;
 	}
 	
 	/*
@@ -354,6 +356,9 @@ public class Character {
 	public void addAdjustInitiative(Adjust adjustment) {
 		initiative.addAdjust(adjustment);
 	}
+	public void addSense(Adjust adjustment) {
+		senses.add(adjustment);
+	}
 	
 	/*
 	 * STRING METHODS
@@ -366,7 +371,11 @@ public class Character {
 		str.append(race.toString().split(":")[0] + " ");
 		str.append(getClassString() + "\n");
 		str.append(getAlignment() + " " + getSizeString() + " " + type + "\n");
-		str.append("Initiative: " + initiative.getBonus() + "\n");
+		str.append("Init: " + (initiative.getBonus() < 0 ? "" : "+") + initiative.getBonus() + "; Senses: ");
+		for(Adjust adjust : senses) {
+			str.append(adjust + "  ");
+		}
+		str.append("\nPerception " + (perception.getBonus() < 0 ? "" : "+") + perception.getBonus() + "\n");
 		
 		str.append("\n" + line() + "\n");
 		str.append("DEFENSE" + "\n");

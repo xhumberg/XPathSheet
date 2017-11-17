@@ -111,4 +111,12 @@ public class Adjustment {
 		character.addAdjustInitiative(newAdjustment);
 		adjustments.add(newAdjustment);
 	}
+
+	public void addSenses(String type, String description, Character character) {
+		Adjust newAdjustment = new Adjust(type, id, description);
+		
+		character.addSense(newAdjustment);
+		adjustments.add(newAdjustment);
+		
+	}
 }
