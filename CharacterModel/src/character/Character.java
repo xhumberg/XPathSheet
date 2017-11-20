@@ -14,6 +14,12 @@ public class Character {
 	private Stat speed;
 	private Stat size;
 	private Skill initiative;
+	private Armor AC;
+	private Health HP;
+	private Skill fortSave;
+	private Skill refSave;
+	private Skill willSave;
+	private Equipment equipment;
 	
 	/*
 	 * Alignment
@@ -102,7 +108,12 @@ public class Character {
 		wisdom = new Stat();
 		charisma = new Stat();
 		
+		HP = new Health(constitution);
 		initiative = new Skill(dexterity, false);
+		AC = new Armor(size, dexterity);
+		fortSave = new Skill(constitution, false);
+		refSave = new Skill(dexterity, false);
+		willSave = new Skill(wisdom, false);
 		
 		acrobatics = new Skill(dexterity, false);
 		appraise = new Skill(intelligence, false);
@@ -359,6 +370,24 @@ public class Character {
 	public void addSense(Adjust adjustment) {
 		senses.add(adjustment);
 	}
+	public void addHitDice(Adjust adjustment) {
+		HP.addHitDice(adjustment);
+	}
+	public void addAdjustSave(String save, Adjust adjustment) {
+		switch (save.toLowerCase()) {
+		case("will"):
+			willSave.addAdjust(adjustment);
+			return;
+		case ("fort"):
+		case ("fortitude"):
+			fortSave.addAdjust(adjustment);
+			return;
+		case ("ref"):
+		case ("reflex"):
+			refSave.addAdjust(adjustment);
+			return;
+		}
+	}
 	
 	/*
 	 * STRING METHODS
@@ -380,6 +409,15 @@ public class Character {
 		str.append("\n" + line() + "\n");
 		str.append("DEFENSE" + "\n");
 		str.append(line() + "\n");
+		str.append(AC + "\n");
+		str.append(HP + "\n");
+		str.append("Fort: ");
+		str.append(fortSave.getBonus());
+		str.append(", Ref: ");
+		str.append(refSave.getBonus());
+		str.append(", Will: ");
+		str.append(willSave.getBonus());
+		str.append("\n");
 		
 		str.append("\n" + line() + "\n");
 		str.append("OFFENSE" + "\n");

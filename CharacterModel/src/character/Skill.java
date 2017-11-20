@@ -28,6 +28,9 @@ public class Skill {
 	public void addRank() {
 		ranks++;
 	}
+	public void addRanks(int i) {
+		ranks += i;
+	}
 	public void setRanks(int ranks) {
 		this.ranks = ranks;
 	}

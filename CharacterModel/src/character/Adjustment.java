@@ -119,4 +119,22 @@ public class Adjustment {
 		adjustments.add(newAdjustment);
 		
 	}
+
+	public void addHitDice(int roll, Character character) {
+		int action = decodeType("add");
+		
+		Adjust newAdjustment = new Adjust("HP", id, action, roll);
+		
+		character.addHitDice(newAdjustment);
+		adjustments.add(newAdjustment);
+	}
+
+	public void addAdjustSave(String save, String type, int value, Character character) {
+		int action = decodeType(type);
+		
+		Adjust newAdjustment = new Adjust(save, id, action, value);
+		
+		character.addAdjustSave(save, newAdjustment);
+		adjustments.add(newAdjustment);
+	}
 }
