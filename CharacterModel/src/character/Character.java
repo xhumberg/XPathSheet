@@ -19,7 +19,10 @@ public class Character {
 	private Skill fortSave;
 	private Skill refSave;
 	private Skill willSave;
+	Stat BAB;
 	private Equipment equipment;
+	private List<Attack> attacks;
+	private Spellstuffs spells;
 	
 	/*
 	 * Alignment
@@ -32,12 +35,12 @@ public class Character {
 	/*
 	 * STATS
 	 */
-	private Stat strength;
-	private Stat dexterity;
-	private Stat constitution;
-	private Stat intelligence;
-	private Stat wisdom;
-	private Stat charisma;
+	Stat strength;
+	Stat dexterity;
+	Stat constitution;
+	Stat intelligence;
+	Stat wisdom;
+	Stat charisma;
 	
 	/*
 	 * SKILLS
@@ -114,6 +117,10 @@ public class Character {
 		fortSave = new Skill(constitution, false);
 		refSave = new Skill(dexterity, false);
 		willSave = new Skill(wisdom, false);
+		BAB = new Stat();
+		BAB.setBase(0);
+		attacks = new ArrayList<Attack>();
+		equipment = new Equipment();
 		
 		acrobatics = new Skill(dexterity, false);
 		appraise = new Skill(intelligence, false);
@@ -351,6 +358,22 @@ public class Character {
 	public void setTempInitiative(int temp) {
 		initiative.setTemp(temp);
 	}
+	public void addSpellKnown(Spell spell) {
+		if (spells == null)
+			throw new RuntimeException("Spells not enabled for character");
+		spells.addSpellKnown(spell);
+	}
+	public void prepareSpell(String string) {
+		if (spells == null)
+			throw new RuntimeException("Spells not enabled for character");
+		spells.prepareSpell(string);
+		
+	}
+	
+	public void enableSpellcasting(String casterStat, boolean spontaneous) {
+		Stat cast = getAbility(casterStat);
+		spells = new Spellstuffs(cast, spontaneous);
+	}
 	
 	/*
 	 * ADJUSTERS
@@ -388,6 +411,17 @@ public class Character {
 			return;
 		}
 	}
+	public void addAdjustBAB(Adjust adjustment) {
+		BAB.addAdjust(adjustment);
+	}
+	public void addAttack(Attack attack) {
+		attacks.add(attack);
+	}
+	public void addAdjustSpellsPerDay(int level, Adjust adjustment) {
+		if (spells == null)
+			throw new RuntimeException("Spells not enabled for character");
+		spells.addAdjustNumSpells(level, adjustment);
+	}
 	
 	/*
 	 * STRING METHODS
@@ -423,6 +457,36 @@ public class Character {
 		str.append("OFFENSE" + "\n");
 		str.append(line() + "\n");
 		str.append("Speed: " + getSpeed() + " ft.\n");
+		boolean isMelee = false;
+		for (Attack attack : attacks)
+			if (attack.isMelee()) {
+				isMelee = true;
+				break;
+			}
+		if (isMelee)
+			str.append("Melee: \n");
+		
+		for (Attack attack : attacks) {
+			if (attack.isMelee())
+				str.append(attack + "\n");
+		}
+		boolean isRanged = false;
+		for (Attack attack : attacks)
+			if (!attack.isMelee()) {
+				isRanged = true;
+				break;
+			}
+		if (isRanged)
+			str.append("Ranged: \n");
+		for (Attack attack : attacks) {
+			if (!attack.isMelee())
+				str.append(attack + "\n");
+		}
+		str.append("Spells:\n");
+		if (spells != null) {
+			str.append(spells.listPrepared());
+		}
+		
 		
 		str.append("\n" + line() + "\n");
 		str.append("STATISTICS" + "\n");
@@ -537,4 +601,13 @@ public class Character {
 		feats.add(newFeat);
 		return newFeat;
 	}
+	Adjustment addItem(String name, int value, int weight) {
+		Adjustment newItem = new Adjustment(newAdjustmentIndex++);
+		equipment.add(name, value, weight, newItem);
+		return newItem;
+	}
+
+
+
+
 }

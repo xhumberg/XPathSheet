@@ -137,4 +137,18 @@ public class Adjustment {
 		character.addAdjustSave(save, newAdjustment);
 		adjustments.add(newAdjustment);
 	}
+	
+	public void addAttack(Attack attack, Character character) {
+		character.addAttack(attack);
+		Adjust newAdjustment = new Adjust("Add Attack", id, attack.name);
+		adjustments.add(newAdjustment);
+	}
+
+	public void addAdjustSpells(int level, String type, int value, Character character) {
+		int action = decodeType(type);
+		
+		Adjust newAdjustment = new Adjust("Add Spells to Level" + level, id, action, value);
+		character.addAdjustSpellsPerDay(level, newAdjustment);
+		adjustments.add(newAdjustment);
+	}
 }
