@@ -68,4 +68,14 @@ public class Skill {
 	public void addAdjust(Adjust addMe) {
 		adjustments.add(addMe);
 	}
+	public void removeAdjust(int id) {
+		int index = 0;
+		while (index < adjustments.size()) {
+			if (adjustments.get(index).isID(id)) {
+				adjustments.remove(index);
+				continue;
+			}
+			index++;
+		}
+	}
 }

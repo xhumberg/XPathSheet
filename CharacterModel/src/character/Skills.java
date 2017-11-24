@@ -179,6 +179,60 @@ public class Skills {
 		case "UMD":
 			return useMagicDevice;
 		}
-		return null;
+		throw new RuntimeException("Cannot find skill " + skill);
+	}
+
+	public void deactivateAdjustment(int id) {
+		acrobatics.removeAdjust(id);
+		appraise.removeAdjust(id);
+		bluff.removeAdjust(id);
+		climb.removeAdjust(id);
+		crafta.removeAdjust(id);
+		craftb.removeAdjust(id);
+		diplomacy.removeAdjust(id);
+		disableDevice.removeAdjust(id);
+		disguise.removeAdjust(id);
+		escapeArtist.removeAdjust(id);
+		fly.removeAdjust(id);
+		handleAnimal.removeAdjust(id);
+		heal.removeAdjust(id);
+		intimidate.removeAdjust(id);
+		knowledgeArcana.removeAdjust(id);
+		knowledgeDungeoneering.removeAdjust(id);
+		knowledgeEngineering.removeAdjust(id);
+		knowledgeGeography.removeAdjust(id);
+		knowledgeHistory.removeAdjust(id);
+		knowledgeLocal.removeAdjust(id);
+		knowledgeNature.removeAdjust(id);
+		knowledgeNobility.removeAdjust(id);
+		knowledgePlanes.removeAdjust(id);
+		knowledgeReligion.removeAdjust(id);
+		linguistics.removeAdjust(id);
+		perception.removeAdjust(id);
+		performa.removeAdjust(id);
+		performb.removeAdjust(id);
+		professiona.removeAdjust(id);
+		professionb.removeAdjust(id);
+		professionc.removeAdjust(id);
+		ride.removeAdjust(id);
+		senseMotive.removeAdjust(id);
+		sleightOfHand.removeAdjust(id);
+		spellcraft.removeAdjust(id);
+		stealth.removeAdjust(id);
+		survival.removeAdjust(id);
+		swim.removeAdjust(id);
+		useMagicDevice.removeAdjust(id);
+	}
+	
+	public void activateAdjustment(Adjustment adjustment) {
+		deactivateAdjustment(adjustment.id);
+		for (Adjust adjust : adjustment.adjustments) {
+			try{
+				Skill addition = this.getSkill(adjust.getWhatAdjust());
+				addition.addAdjust(adjust);
+			} catch (RuntimeException e) {
+				continue;
+			}
+		}
 	}
 }
