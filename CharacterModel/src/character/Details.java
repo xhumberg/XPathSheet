@@ -191,4 +191,15 @@ public class Details {
 	public int getRacialBonus() {
 		return getClassBonus(2);
 	}
+
+	public Object getActiveEffectList() {
+		StringBuilder str = new StringBuilder();
+		for (Adjustment effect : effects) {
+			if (effect.active)
+				str.append(effect.name + ", ");
+		}
+		if (str.length() > 2)
+			return str.substring(0, str.length()-2);
+		return str.toString();
+	}
 }

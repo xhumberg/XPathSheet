@@ -8,12 +8,14 @@ public class Adjustment {
 	String name;
 	String description;
 	List<Adjust> adjustments;
+	boolean active;
 	
 	public Adjustment(int id) {
 		this.id = id;
 		name = "No Name";
 		description = "";
 		adjustments = new ArrayList<Adjust>();
+		active = true;
 	}
 	
 	public String getName() {
@@ -148,5 +150,15 @@ public class Adjustment {
 		Adjust newAdjustment = new Adjust("Add Spells to Level" + level, id, action, value);
 		character.addAdjustSpellsPerDay(level, newAdjustment);
 		adjustments.add(newAdjustment);
+	}
+
+	public void deactivate(Character character) {
+		active = false;
+		//TODO: remove from player
+	}
+	
+	public void activate(Character character) {
+		active = true;
+		//TODO: add to player
 	}
 }
