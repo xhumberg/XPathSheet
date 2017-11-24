@@ -7,12 +7,10 @@ public class Adjustment {
 	int id;
 	String name;
 	String description;
-	boolean active;
 	List<Adjust> adjustments;
 	
 	public Adjustment(int id) {
 		this.id = id;
-		active = true;
 		name = "No Name";
 		description = "";
 		adjustments = new ArrayList<Adjust>();

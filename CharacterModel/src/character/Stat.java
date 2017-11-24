@@ -11,7 +11,11 @@ class Stat {
 	private int mod;
 	
 	Stat() {
-		base = 10;
+		this(10);
+	}
+	
+	Stat(int base) {
+		this.base = base;
 		temp = 0;
 		adjustments = new ArrayList<Adjust>();
 		score = 10;
@@ -19,34 +23,46 @@ class Stat {
 	}
 	
 	int getScore() {
+		recalculate();
 		return score;
 	}
 	
 	int getMod() {
+		recalculate();
 		return mod;
 	}
 	
 	void setBase(int base) {
 		this.base = base;
-		recalculate();
 	}
 	
 	int getBase() {
+		recalculate();
 		return base;
 	}
 	
 	void setTemp(int temp) {
 		this.temp = temp;
-		recalculate();
 	}
 	
 	int getTemp() {
+		recalculate();
 		return temp;
 	}
 	
 	void addAdjust(Adjust addMe){
 		adjustments.add(addMe);
-		recalculate();
+	}
+	
+	void removeAdjust(int id) {
+		int index = 0;
+		while (index < adjustments.size()) {
+			if (adjustments.get(index).isID(id)) {
+				adjustments.remove(index);
+				continue;
+			}
+			index++;
+		}
 	}
 	
 	private void recalculate() {

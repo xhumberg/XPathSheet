@@ -81,4 +81,12 @@ public class Adjust {
 			return str.toString();
 		}
 	}
+
+	public boolean isID(int id) {
+		return this.parentID == id;
+	}
+
+	public String getWhatAdjust() {
+		return whatAdjust;
+	}
 }
