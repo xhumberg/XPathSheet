@@ -235,4 +235,48 @@ public class Skills {
 			}
 		}
 	}
+
+	public String toString() {
+		StringBuilder str = new StringBuilder();
+		str.append("Acrobatics: " + acrobatics + "  ");
+		str.append("Appraise: " + appraise + "  ");
+		str.append("Bluff: " + bluff + "  ");
+		str.append("Climb: " + climb + "  ");
+		str.append("Craft A: " + crafta + "  \n");
+		str.append("Craft B: " + craftb + "  ");
+		str.append("Diplomacy: " + diplomacy + "  ");
+		str.append("Disable Device: " + (disableDevice.getBonus() == -999 ? "No" : disableDevice) + "  ");
+		str.append("Disguise: " + disguise + "  \n");
+		str.append("Escape Artist: " + escapeArtist + "  ");
+		str.append("Fly: " + fly + "  ");
+		str.append("Handle Animal: " + (handleAnimal.getBonus() == -999 ? "No" : handleAnimal) + "  ");
+		str.append("Heal: " + heal + "  \n");
+		str.append("Intimidate: " + intimidate + "  ");
+		str.append("Knowledge(Arcana): " + (knowledgeArcana.getBonus() == -999 ? "No" : knowledgeArcana) + "  ");
+		str.append("Knowledge(Dungeoneering): " + (knowledgeDungeoneering.getBonus() == -999 ? "No" : knowledgeDungeoneering) + "  \n");
+		str.append("Knowledge(Engineering): " + (knowledgeEngineering.getBonus() == -999 ? "No" : knowledgeEngineering) + "  ");
+		str.append("Knowledge(Geography): " + (knowledgeGeography.getBonus() == -999 ? "No" : knowledgeGeography) + "  ");
+		str.append("Knowledge(History): " + (knowledgeHistory.getBonus() == -999 ? "No" : knowledgeHistory) + "  \n");
+		str.append("Knowledge(Local): " + (knowledgeLocal.getBonus() == -999 ? "No" : knowledgeLocal) + "  ");
+		str.append("Knowledge(Nature): " + (knowledgeNature.getBonus() == -999 ? "No" : knowledgeNature) + "  ");
+		str.append("Knowledge(Nobility): " + (knowledgeNobility.getBonus() == -999 ? "No" : knowledgeNobility) + "  \n");
+		str.append("Knowledge(Planes): " + (knowledgePlanes.getBonus() == -999 ? "No" : knowledgePlanes) + "  ");
+		str.append("Knowledge(Religion): " + (knowledgeReligion.getBonus() == -999 ? "No" : knowledgeReligion) + "  ");
+		str.append("Linguistics: " + (linguistics.getBonus() == -999 ? "No" : linguistics) + "  \n");
+		str.append("Perception: " + perception + "  ");
+		str.append("Perform A: " + performa + "  ");
+		str.append("Perform B: " + performb + "  ");
+		str.append("Profession A: " + (professiona.getBonus() == -999 ? "No" : professiona) + "  ");
+		str.append("Profession B: " + (professionb.getBonus() == -999 ? "No" : professionb) + "  \n");
+		str.append("Profession C: " + (professionc.getBonus() == -999 ? "No" : professionc) + "  ");
+		str.append("Ride: " + ride + "  ");
+		str.append("Sense Motive: " + senseMotive + "  ");
+		str.append("Sleight of Hand: " + (sleightOfHand.getBonus() == -999 ? "No" : sleightOfHand) + "  ");
+		str.append("Spellcraft: " + (spellcraft.getBonus() == -999 ? "No" : spellcraft) + "  \n");
+		str.append("Stealth: " + stealth + "  ");
+		str.append("Survival: " + survival + "  ");
+		str.append("Swim: " + swim + "  ");
+		str.append("Use Magic Device: " + (useMagicDevice.getBonus() == -999 ? "No" : useMagicDevice) + "  ");
+		return str.toString();
+	}
 }

@@ -76,4 +76,15 @@ public class Abilities {
 			}
 		}
 	}
+
+	public String toString() {
+		StringBuilder str = new StringBuilder();
+		str.append("STR: " + strength  + ", ");
+		str.append("DEX: " + dexterity + ", ");
+		str.append("CON: " + constitution + ", ");
+		str.append("INT: " + intelligence + ", ");
+		str.append("WIS: " + wisdom + ", ");
+		str.append("CHA: " + charisma);
+		return str.toString();
+	}
 }

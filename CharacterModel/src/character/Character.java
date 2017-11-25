@@ -19,27 +19,13 @@ public class Character {
 	private boolean chaotic;
 	private boolean good;
 	private boolean evil;
-	
-	/*
-	 * STATS
-	 */
 
-	
-	/*
-	 * SKILLS
-	 */
-
-	
-	private int newAdjustmentIndex;
-	
 	public Character() {
 		this.initialize(10, 10, 10, 10, 10, 10);
 	}
-	
 	public Character(int strength, int dexterity, int constitution, int intelligence, int wisdom, int charisma) {
 		this.initialize(strength, dexterity, constitution, intelligence, wisdom, charisma);
 	}
-	
 	public void initialize(int strength, int dexterity, int constitution, int intelligence, int wisdom, int charisma) {
 		abilities = new Abilities(strength, dexterity, constitution, intelligence, wisdom, charisma);
 		skills = new Skills(abilities);
@@ -96,118 +82,38 @@ public class Character {
 	public String toString() {
 		StringBuilder str = new StringBuilder();
 		str.append(line() + "\n");
-		str.append(name + "\n");
+		str.append(character.name + "\n");
 		str.append(line() + "\n");
-		str.append(race.toString().split(":")[0] + " ");
+		str.append(race().toString().split(":")[0] + " ");
 		str.append(getClassString() + "\n");
-		str.append(getAlignment() + " " + getSizeString() + " " + type + "\n");
-		str.append("Init: " + (initiative.getBonus() < 0 ? "" : "+") + initiative.getBonus() + "; Senses: ");
-		for(Adjust adjust : senses) {
-			str.append(adjust + "  ");
-		}
-		str.append("\nPerception " + (perception.getBonus() < 0 ? "" : "+") + perception.getBonus() + "\n");
+		str.append(getAlignment() + " " + getSizeString() + " " + character.type + "\n");
+		str.append("Init: " + (offense.initiative.getBonus() < 0 ? "" : "+") + offense.initiative.getBonus() + "; Senses: ");
+		str.append(character.getSenses());
+		str.append("\nPerception " + (skills.getSkill("perception").getBonus() < 0 ? "" : "+") + skills.getSkill("perception").getBonus() + "\n");
 		
 		str.append("\n" + line() + "\n");
 		str.append("DEFENSE" + "\n");
 		str.append(line() + "\n");
-		str.append(AC + "\n");
-		str.append(HP + "\n");
-		str.append("Fort: ");
-		str.append(fortSave.getBonus());
-		str.append(", Ref: ");
-		str.append(refSave.getBonus());
-		str.append(", Will: ");
-		str.append(willSave.getBonus());
-		str.append("\n");
+		str.append(defense + "\n");
 		
 		str.append("\n" + line() + "\n");
 		str.append("OFFENSE" + "\n");
 		str.append(line() + "\n");
-		str.append("Speed: " + getSpeed() + " ft.\n");
-		boolean isMelee = false;
-		for (Attack attack : attacks)
-			if (attack.isMelee()) {
-				isMelee = true;
-				break;
-			}
-		if (isMelee)
-			str.append("Melee: \n");
+		str.append(offense + "\n");
 		
-		for (Attack attack : attacks) {
-			if (attack.isMelee())
-				str.append(attack + "\n");
-		}
-		boolean isRanged = false;
-		for (Attack attack : attacks)
-			if (!attack.isMelee()) {
-				isRanged = true;
-				break;
-			}
-		if (isRanged)
-			str.append("Ranged: \n");
-		for (Attack attack : attacks) {
-			if (!attack.isMelee())
-				str.append(attack + "\n");
-		}
-		str.append("Spells:\n");
-		if (spells != null) {
-			str.append(spells.listPrepared());
-		}
+//		str.append("Spells:\n");
+//		if (spells != null) {
+//			str.append(spells.listPrepared());
+//		}
 		
 		
 		str.append("\n" + line() + "\n");
 		str.append("STATISTICS" + "\n");
 		str.append(line() + "\n");
-		str.append("STR: " + strength  + ", ");
-		str.append("DEX: " + dexterity + ", ");
-		str.append("CON: " + constitution + ", ");
-		str.append("INT: " + intelligence + ", ");
-		str.append("WIS: " + wisdom + ", ");
-		str.append("CHA: " + charisma + "\n");
+		str.append(abilities + "\n");
 		str.append("Feats: ");
-		for(Adjustment adjustment : feats) {
-			str.append(adjustment.getName() + "  ");
-		}
-		str.append("\n");
-		str.append("Acrobatics: " + acrobatics + "  ");
-		str.append("Appraise: " + appraise + "  ");
-		str.append("Bluff: " + bluff + "  ");
-		str.append("Climb: " + climb + "  ");
-		str.append("Craft A: " + crafta + "  \n");
-		str.append("Craft B: " + craftb + "  ");
-		str.append("Diplomacy: " + diplomacy + "  ");
-		str.append("Disable Device: " + (disableDevice.getBonus() == -999 ? "No" : disableDevice) + "  ");
-		str.append("Disguise: " + disguise + "  \n");
-		str.append("Escape Artist: " + escapeArtist + "  ");
-		str.append("Fly: " + fly + "  ");
-		str.append("Handle Animal: " + (handleAnimal.getBonus() == -999 ? "No" : handleAnimal) + "  ");
-		str.append("Heal: " + heal + "  \n");
-		str.append("Intimidate: " + intimidate + "  ");
-		str.append("Knowledge(Arcana): " + (knowledgeArcana.getBonus() == -999 ? "No" : knowledgeArcana) + "  ");
-		str.append("Knowledge(Dungeoneering): " + (knowledgeDungeoneering.getBonus() == -999 ? "No" : knowledgeDungeoneering) + "  \n");
-		str.append("Knowledge(Engineering): " + (knowledgeEngineering.getBonus() == -999 ? "No" : knowledgeEngineering) + "  ");
-		str.append("Knowledge(Geography): " + (knowledgeGeography.getBonus() == -999 ? "No" : knowledgeGeography) + "  ");
-		str.append("Knowledge(History): " + (knowledgeHistory.getBonus() == -999 ? "No" : knowledgeHistory) + "  \n");
-		str.append("Knowledge(Local): " + (knowledgeLocal.getBonus() == -999 ? "No" : knowledgeLocal) + "  ");
-		str.append("Knowledge(Nature): " + (knowledgeNature.getBonus() == -999 ? "No" : knowledgeNature) + "  ");
-		str.append("Knowledge(Nobility): " + (knowledgeNobility.getBonus() == -999 ? "No" : knowledgeNobility) + "  \n");
-		str.append("Knowledge(Planes): " + (knowledgePlanes.getBonus() == -999 ? "No" : knowledgePlanes) + "  ");
-		str.append("Knowledge(Religion): " + (knowledgeReligion.getBonus() == -999 ? "No" : knowledgeReligion) + "  ");
-		str.append("Linguistics: " + (linguistics.getBonus() == -999 ? "No" : linguistics) + "  \n");
-		str.append("Perception: " + perception + "  ");
-		str.append("Perform A: " + performa + "  ");
-		str.append("Perform B: " + performb + "  ");
-		str.append("Profession A: " + (professiona.getBonus() == -999 ? "No" : professiona) + "  ");
-		str.append("Profession B: " + (professionb.getBonus() == -999 ? "No" : professionb) + "  \n");
-		str.append("Profession C: " + (professionc.getBonus() == -999 ? "No" : professionc) + "  ");
-		str.append("Ride: " + ride + "  ");
-		str.append("Sense Motive: " + senseMotive + "  ");
-		str.append("Sleight of Hand: " + (sleightOfHand.getBonus() == -999 ? "No" : sleightOfHand) + "  ");
-		str.append("Spellcraft: " + (spellcraft.getBonus() == -999 ? "No" : spellcraft) + "  \n");
-		str.append("Stealth: " + stealth + "  ");
-		str.append("Survival: " + survival + "  ");
-		str.append("Swim: " + swim + "  ");
-		str.append("Use Magic Device: " + (useMagicDevice.getBonus() == -999 ? "No" : useMagicDevice) + "  ");
+		str.append(character.featList() + "\n");
+		str.append(skills + "\n");
 		return str.toString();
 	}
 	private String getClassString() {
@@ -240,11 +146,6 @@ public class Character {
 	private String line() {
 		return "----------------------------------------";
 	}
-	Adjustment addItem(String name, int value, int weight) {
-		Adjustment newItem = new Adjustment(newAdjustmentIndex++);
-		equipment.add(name, value, weight, newItem);
-		return newItem;
-	}
 
 	public void deactivateAdjustment(int id) {
 		// TODO Auto-generated method stub
@@ -252,8 +153,22 @@ public class Character {
 	}
 
 	public void activateAdjustment(Adjustment adjustment) {
-		// TODO Auto-generated method stub
-		
+		abilities.activateAdjustment(adjustment);
+		skills.activateAdjustment(adjustment);
+		offense.activateAdjustment(adjustment);
+		defense.activateAdjustment(adjustment);
+	}
+	public void setName(String name) {
+		character.name = name;
+	}
+	public Adjustment race() {
+		return character.getRace();
+	}
+	public Stat ability(String string) {
+		return abilities.get(string);
+	}
+	public void setType(String type) {
+		character.type = type;
 	}
 
 

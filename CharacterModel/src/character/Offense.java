@@ -124,4 +124,35 @@ public class Offense {
 			return str.substring(0, str.length()-1);
 		return str.toString();
 	}
+
+	public String toString() {
+		StringBuilder str = new StringBuilder();
+		str.append("Speed: " + speed() + " ft.\n");
+		boolean isMelee = false;
+		for (Attack attack : attacks)
+			if (attack.isMelee()) {
+				isMelee = true;
+				break;
+			}
+		if (isMelee)
+			str.append("Melee: \n");
+		
+		for (Attack attack : attacks) {
+			if (attack.isMelee())
+				str.append(attack + "\n");
+		}
+		boolean isRanged = false;
+		for (Attack attack : attacks)
+			if (!attack.isMelee()) {
+				isRanged = true;
+				break;
+			}
+		if (isRanged)
+			str.append("Ranged: \n");
+		for (Attack attack : attacks) {
+			if (!attack.isMelee())
+				str.append(attack + "\n");
+		}
+		return str.toString();
+	}
 }

@@ -19,7 +19,7 @@ public class Details {
 	private int currentFeat;
 	private List<Adjustment> effects;
 	private int currentEffect;
-	private List<String> senses;
+	private List<Special> senses;
 	
 	public Details(String name, char gender, String size, String favoredClass, String type) {
 		this.name = name;
@@ -35,7 +35,7 @@ public class Details {
 		effects = new ArrayList<Adjustment>();
 		currentFeat = 21;
 		currentEffect = 121;
-		senses = new ArrayList<String>();
+		senses = new ArrayList<Special>();
 	}
 
 	private int decodeSize(String size) {
@@ -120,14 +120,14 @@ public class Details {
 		return newAdjustment;		
 	}
 	
-	public void addSense(String sense) {
-		senses.add(sense);
+	public void addSense(int id, String sense) {
+		senses.add(new Special(id, sense, ""));
 	}
 	
 	public String getSenses() {
 		StringBuilder str = new StringBuilder();
-		for (String sense : senses) {
-			str.append(sense + ", ");
+		for (Special sense : senses) {
+			str.append(sense.name + ", ");
 		}
 		if (str.length() > 2)
 			return str.substring(0, str.length()-2);
@@ -139,11 +139,14 @@ public class Details {
 	}
 	
 	public String getClassesString() {
+		
 		Set<String> classNames = new HashSet<String>();
 		for(Adjustment level : classes) {
 			if (level != null)
 				classNames.add(level.name);
 		}
+		if (classNames.isEmpty())
+			return "Commoner";
 		StringBuilder str = new StringBuilder();
 		for(String className : classNames) {
 			int specificLevel = 0;
@@ -159,7 +162,7 @@ public class Details {
 		return str.toString();
 	}
 
-	public Object featList() {
+	public String featList() {
 		StringBuilder str = new StringBuilder();
 		for (Adjustment feat : feats) {
 			str.append(feat.name + ", ");

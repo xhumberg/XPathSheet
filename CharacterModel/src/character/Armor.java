@@ -147,6 +147,8 @@ public class Armor {
 			str.append("Dodge: " + getDodge() + "  ");
 		if (size.getScore() != 0)
 			str.append("Size: " + (-size.getScore()));
+		if (str.charAt(str.length()-1) == ' ')
+			return str.substring(0, str.length()-2) + ")";
 		str.append(")");
 		return str.toString();
 	}

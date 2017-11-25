@@ -48,6 +48,19 @@ public class Defense {
 		fortSave.removeAdjust(id);
 		refSave.removeAdjust(id);
 		willSave.removeAdjust(id);
-		
+	}
+	
+	public String toString() {
+		StringBuilder str = new StringBuilder();
+		str.append(AC + "\n");
+		str.append(HP + "\n");
+		str.append("Fort: ");
+		str.append(fortSave.getBonus());
+		str.append(", Ref: ");
+		str.append(refSave.getBonus());
+		str.append(", Will: ");
+		str.append(willSave.getBonus());
+		str.append("\n");
+		return str.toString();
 	}
 }
