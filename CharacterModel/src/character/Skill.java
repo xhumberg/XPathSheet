@@ -55,11 +55,12 @@ public class Skill {
 			bonus = -999;
 			return;
 		}
-		bonus = ranks + temp + stat.getMod();
-		if (classSkill && ranks > 0)
-			bonus += 3;
+		bonus = ranks;
 		for (Adjust adjust : adjustments) 
 			bonus = adjust.applyAdjustment(bonus);
+		bonus += temp + stat.getMod();
+		if (classSkill && ranks > 0)
+			bonus += 3;
 	}
 	public String toString() {
 		recalculate();

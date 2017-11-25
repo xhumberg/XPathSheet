@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Offense {
+	private Stat strength;
+	private Stat size;
 	Skill initiative;
 	Stat BAB;
 	List<Attack> attacks;
@@ -14,7 +16,9 @@ public class Offense {
 	Stat burrowSpeed;
 	List<Special> specialAttacks;
 	
-	public Offense(Abilities abilities) {
+	public Offense(Abilities abilities, Details character) {
+		size = character.size;
+		strength = abilities.get("Strength");
 		attacks = new ArrayList<Attack>();
 		specialAttacks = new ArrayList<Special>();
 		initiative = new Skill(abilities.get("Dexterity"), false);
@@ -24,6 +28,10 @@ public class Offense {
 		flySpeed = new Stat(0);
 		climbSpeed = new Stat(0);
 		burrowSpeed = new Stat(0);
+	}
+	
+	public int CMB() {
+		return strength.getMod() + BAB.getScore() + size.getScore();
 	}
 	
 	private void removeAttacks(int id) {

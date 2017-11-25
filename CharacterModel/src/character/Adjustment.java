@@ -38,15 +38,6 @@ public class Adjustment {
 		this.description = description;
 	}
 	
-	public void addAdjustStat(String stat, String type, int value, Character character) {
-		int action = decodeType(type);
-		
-		Adjust newAdjustment = new Adjust(stat, id, action, value);
-		
-		character.addAbilityScoreAdjust(stat, newAdjustment);
-		adjustments.add(newAdjustment);
-	}
-
 	private int decodeType(String type) {
 		switch (type.toLowerCase()) {
 		case "set":
@@ -60,17 +51,6 @@ public class Adjustment {
 		default:
 			return - 1;
 		}
-	}
-	
-	public void addAdjustSkill(String skill, String type, int value, Character character) {
-		int action = decodeType(type);
-		if (action == 3)
-			character.addClassSkill(skill);
-		
-		Adjust newAdjustment = new Adjust(skill, id, action, value);
-		
-		character.addAdjustSkill(skill, newAdjustment);
-		adjustments.add(newAdjustment);
 	}
 	
 	public String toString() {
@@ -94,86 +74,27 @@ public class Adjustment {
 		}
 		return str.toString();
 	}
-
-	public void changeType(String newType, Character character) {
-		Adjust newAdjustment = new Adjust("type", id, newType);
-		
-		character.setType(newType);
-		adjustments.add(newAdjustment);
-	}
-
-	public void setSize(int size, Character character) {
-		Adjust newAdjustment = new Adjust("size", id, 0, size);
-		
-		character.setSize(size);
-		adjustments.add(newAdjustment);
-	}
-
-	public void addAdjustSpeed(String type, int value, Character character) {
-		int action = decodeType(type);
-		
-		Adjust newAdjustment = new Adjust("speed", id, action, value);
-		
-		character.addAdjustSpeed(newAdjustment);
-		adjustments.add(newAdjustment);
-	}
-
-	public void addAdjustInitiative(String type, int value, Character character) {
-		int action = decodeType(type);
-		
-		Adjust newAdjustment = new Adjust("Initiative", id, action, value);
-		
-		character.addAdjustInitiative(newAdjustment);
-		adjustments.add(newAdjustment);
-	}
-
-	public void addSenses(String type, String description, Character character) {
-		Adjust newAdjustment = new Adjust(type, id, description);
-		
-		character.addSense(newAdjustment);
-		adjustments.add(newAdjustment);
-		
-	}
-
-	public void addHitDice(int roll, Character character) {
-		int action = decodeType("add");
-		
-		Adjust newAdjustment = new Adjust("HP", id, action, roll);
-		
-		character.addHitDice(newAdjustment);
-		adjustments.add(newAdjustment);
-	}
-
-	public void addAdjustSave(String save, String type, int value, Character character) {
-		int action = decodeType(type);
-		
-		Adjust newAdjustment = new Adjust(save, id, action, value);
-		
-		character.addAdjustSave(save, newAdjustment);
-		adjustments.add(newAdjustment);
+	
+	/**
+	 * This DOES NOT activate the adjustment automatically.
+	 * 
+	 * @param whatAdjust
+	 * @param howAdjust
+	 * @param adjustTo
+	 */
+	public void addAdjust(String whatAdjust, String howAdjust, int adjustTo) {
+		adjustments.add(new Adjust(whatAdjust, id, decodeType(howAdjust), adjustTo));
 	}
 	
-	public void addAttack(Attack attack, Character character) {
-		character.addAttack(attack);
-		Adjust newAdjustment = new Adjust("Add Attack", id, attack.name);
-		adjustments.add(newAdjustment);
-	}
-
-	public void addAdjustSpells(int level, String type, int value, Character character) {
-		int action = decodeType(type);
-		
-		Adjust newAdjustment = new Adjust("Add Spells to Level" + level, id, action, value);
-		character.addAdjustSpellsPerDay(level, newAdjustment);
-		adjustments.add(newAdjustment);
-	}
-
 	public void deactivate(Character character) {
 		active = false;
-		//TODO: remove from player
+		if (character != null)
+			character.deactivateAdjustment(id);
 	}
 	
 	public void activate(Character character) {
 		active = true;
-		//TODO: add to player
+		if (character != null)
+			character.activateAdjustment(this);
 	}
 }

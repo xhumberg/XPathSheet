@@ -8,12 +8,7 @@ public class Character {
 	private Skills skills;
 	private Details character;
 	private Offense offense;
-	
-	private Armor AC;
-	private Health HP;
-	private Skill fortSave;
-	private Skill refSave;
-	private Skill willSave;
+	private Defense defense;
 	private Equipment equipment;
 	private Spellstuffs spells;
 	
@@ -48,33 +43,14 @@ public class Character {
 	public void initialize(int strength, int dexterity, int constitution, int intelligence, int wisdom, int charisma) {
 		abilities = new Abilities(strength, dexterity, constitution, intelligence, wisdom, charisma);
 		skills = new Skills(abilities);
-		character = new Details("No Name", 'X', "Medium", "No Favored Class Selected");
-		name = "No Name";
-		race = new Adjustment(0);
-		classes = new ArrayList<Adjustment>();
-		feats = new ArrayList<Adjustment>();
-		senses = new ArrayList<Adjust>();
-		newAdjustmentIndex = 22;
-		speed = new Stat();
-		speed.setBase(30);
-		level = 0;
-		size = new Stat();
-		size.setBase(0);
+		character = new Details("No Name", 'X', "Medium", "No Favored Class Selected", "No type set");
+		offense = new Offense(abilities, character);
+		defense = new Defense(abilities, character);
+		equipment = new Equipment();		
 		lawful = false;
 		chaotic = false;
 		good = false;
 		evil = false;
-		
-		HP = new Health(constitution);
-		initiative = new Skill(dexterity, false);
-		AC = new Armor(size, dexterity);
-		fortSave = new Skill(constitution, false);
-		refSave = new Skill(dexterity, false);
-		willSave = new Skill(wisdom, false);
-		BAB = new Stat();
-		BAB.setBase(0);
-		attacks = new ArrayList<Attack>();
-		equipment = new Equipment();		
 	}
 	
 	public String getAlignment() {
@@ -98,18 +74,6 @@ public class Character {
 		
 		return str.toString();
 	}
-	public String getType() {
-		return type;
-	}
-	public int getSize() {
-		return size.getScore();
-	}
-	public int getSpeed() {
-		return speed.getScore();
-	}
-	public void setName(String name) {
-		this.name = name;
-	}
 	public void setAlignment(boolean lawful, boolean chaotic, boolean good, boolean evil) {
 		this.lawful = false;
 		this.chaotic = false;
@@ -125,73 +89,7 @@ public class Character {
 		else if (evil)
 			this.evil = true;
 	}
-	public void setType(String newType) {
-		type = newType;
-	}
-	public void setSize(int size) {
-		this.size.setBase(size);
-	}
-	public void setSpeed(int speed) {
-		this.speed.setBase(speed);
-	}
-	public void setTempInitiative(int temp) {
-		initiative.setTemp(temp);
-	}
-	public void addSpellKnown(Spell spell) {
-		if (spells == null)
-			throw new RuntimeException("Spells not enabled for character");
-		spells.addSpellKnown(spell);
-	}
-	public void prepareSpell(String string) {
-		if (spells == null)
-			throw new RuntimeException("Spells not enabled for character");
-		spells.prepareSpell(string);
-		
-	}
-	
-	public void enableSpellcasting(String casterStat, boolean spontaneous) {
-		Stat cast = getAbility(casterStat);
-		spells = new Spellstuffs(cast, spontaneous);
-	}
-	public void addAdjustSpeed(Adjust adjustment) {
-		speed.addAdjust(adjustment);
-	}
-	public void addAdjustInitiative(Adjust adjustment) {
-		initiative.addAdjust(adjustment);
-	}
-	public void addSense(Adjust adjustment) {
-		senses.add(adjustment);
-	}
-	public void addHitDice(Adjust adjustment) {
-		HP.addHitDice(adjustment);
-	}
-	public void addAdjustSave(String save, Adjust adjustment) {
-		switch (save.toLowerCase()) {
-		case("will"):
-			willSave.addAdjust(adjustment);
-			return;
-		case ("fort"):
-		case ("fortitude"):
-			fortSave.addAdjust(adjustment);
-			return;
-		case ("ref"):
-		case ("reflex"):
-			refSave.addAdjust(adjustment);
-			return;
-		}
-	}
-	public void addAdjustBAB(Adjust adjustment) {
-		BAB.addAdjust(adjustment);
-	}
-	public void addAttack(Attack attack) {
-		attacks.add(attack);
-	}
-	public void addAdjustSpellsPerDay(int level, Adjust adjustment) {
-		if (spells == null)
-			throw new RuntimeException("Spells not enabled for character");
-		spells.addAdjustNumSpells(level, adjustment);
-	}
-	
+
 	/*
 	 * STRING METHODS
 	 */
@@ -313,18 +211,10 @@ public class Character {
 		return str.toString();
 	}
 	private String getClassString() {
-		StringBuilder str = new StringBuilder();
-		
-		if (classes.size() == 0)
-			return "Commoner";
-		str.append(classes.get(0).getName());
-		str.append(" ");
-		str.append(classes.size());
-		return str.toString();
-		//TODO: Support multiclassing
+		return character.getClassesString();
 	}
 	private String getSizeString() {
-		switch (size.getBase()) {
+		switch (character.size.getBase()) {
 		case -1:
 			return "Small";
 		case -2:
@@ -350,30 +240,20 @@ public class Character {
 	private String line() {
 		return "----------------------------------------";
 	}
-	
-	/*
-	 * ADJUSTMENT CREATION METHODS
-	 */
-	Adjustment getRace() {
-		return race;
-	}
-	Adjustment addLevel() {
-		Adjustment newLevel = new Adjustment(++level);
-		classes.add(newLevel);
-		return newLevel;
-	}
-	Adjustment getLevel(int level) {
-		return classes.get(level-1);
-	}
-	Adjustment addFeat() {
-		Adjustment newFeat = new Adjustment(newAdjustmentIndex++);
-		feats.add(newFeat);
-		return newFeat;
-	}
 	Adjustment addItem(String name, int value, int weight) {
 		Adjustment newItem = new Adjustment(newAdjustmentIndex++);
 		equipment.add(name, value, weight, newItem);
 		return newItem;
+	}
+
+	public void deactivateAdjustment(int id) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void activateAdjustment(Adjustment adjustment) {
+		// TODO Auto-generated method stub
+		
 	}
 
 

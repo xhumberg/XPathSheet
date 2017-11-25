@@ -1,126 +1,104 @@
 package character;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class Armor {
-	private Adjust armorBonus;
-	private Adjust shieldBonus;
+	private Stat armorBonus;
+	private Stat shieldBonus;
 	private Stat dexterity;
-	private Adjust enhancementBonus;
-	private Adjust deflectionBonus;
-	private Adjust naturalArmor;
-	private List<Adjust> dodgeBonuses;
-	private Stat size;
-	private Adjust maxDexterityBonus;
-	//TODO: Need to add Armor Check Penalty
-	//TODO: Arcane Spell Failure Chance
-	//Speed is done by the item's adjustment
-	//Weight is done in the item
-	//Value is done in the item
+	private Stat strength;
+	private Stat enhancementBonus;
+	private Stat deflectionBonus;
+	private Stat naturalArmor;
+	private Stat dodgeBonus;
+	private Stat armorCheckPenalty;
+	private Stat arcaneSpellFailure;
+	private Stat maxDexterityBonus;
 	
-	public Armor (Stat size, Stat dexterity) {
+	private Stat size;
+	
+	public Armor (Stat size, Stat dexterity, Stat strength) {
+		this.strength = strength;
 		this.size = size;
 		this.dexterity = dexterity;
-		armorBonus = null;
-		shieldBonus = null;
-		enhancementBonus = null;
-		deflectionBonus = null;
-		naturalArmor = null;
-		dodgeBonuses = new ArrayList<Adjust>();
+		armorBonus = new Stat(0);
+		shieldBonus = new Stat(0);
+		enhancementBonus = new Stat(0);
+		deflectionBonus = new Stat(0);
+		naturalArmor = new Stat(0);
+		dodgeBonus = new Stat(0);
+		armorCheckPenalty = new Stat(0);
+		arcaneSpellFailure = new Stat(0);
+		maxDexterityBonus = new Stat(99);
 	}
 	
-	public void addAdjustArmor(Adjust adjustment) {
-		if (armorBonus == null) {
-			armorBonus = adjustment;
-			return;
+	public void activateAdjustment(Adjustment adjustment) {
+		for(Adjust adjust : adjustment.adjustments) {
+			switch (adjust.getWhatAdjust().toLowerCase()) {
+			case "armor":
+				armorBonus.addAdjust(adjust);
+				continue;
+			case "shield":
+				shieldBonus.addAdjust(adjust);
+				continue;
+			case "ac enhancement":
+				enhancementBonus.addAdjust(adjust);
+				continue;
+			case "deflection":
+				deflectionBonus.addAdjust(adjust);
+				continue;
+			case "natural armor":
+				naturalArmor.addAdjust(adjust);
+				continue;
+			case "dodge":
+				dodgeBonus.addAdjust(adjust);
+				continue;
+			case "max dex bonus":
+			case "max dexterity bonus":
+			case "max dex":
+				maxDexterityBonus.addAdjust(adjust);
+				continue;
+			case "armor check penalty":
+			case "armor check":
+				armorCheckPenalty.addAdjust(adjust);
+				continue;
+			case "arcane spell failure":
+				arcaneSpellFailure.addAdjust(adjust);
+				continue;
+			}
 		}
-		if (adjustment.applyAdjustment(0) > armorBonus.applyAdjustment(0))
-			armorBonus = adjustment;
 	}
-	public void addAdjustShield(Adjust adjustment) {
-		if (shieldBonus == null) {
-			shieldBonus = adjustment;
-			return;
-		}
-		if (adjustment.applyAdjustment(0) > shieldBonus.applyAdjustment(0))
-			shieldBonus = adjustment;
-	}
-	public void addAdjustEnhancement(Adjust adjustment) {
-		if (enhancementBonus == null) {
-			enhancementBonus = adjustment;
-			return;
-		}
-		if (adjustment.applyAdjustment(0) > enhancementBonus.applyAdjustment(0))
-			enhancementBonus = adjustment;
-	}
-	public void addAdjustDeflection(Adjust adjustment) {
-		if (deflectionBonus == null) {
-			deflectionBonus = adjustment;
-			return;
-		}
-		if (adjustment.applyAdjustment(0) > deflectionBonus.applyAdjustment(0))
-			deflectionBonus = adjustment;
-	}
-	public void addAdjustNaturalArmor(Adjust adjustment) {
-		if (naturalArmor == null) {
-			naturalArmor = adjustment;
-			return;
-		}
-		if (adjustment.applyAdjustment(0) > naturalArmor.applyAdjustment(0))
-			naturalArmor = adjustment;
-	}
-	public void addAdjustDodge(Adjust adjustment) {
-		dodgeBonuses.add(adjustment);
-	}
-	public void addMaxDexBonus(Adjust adjustment) {
-		if (maxDexterityBonus == null) {
-			maxDexterityBonus = adjustment;
-			return;
-		}
-		if (adjustment.applyAdjustment(0) < maxDexterityBonus.applyAdjustment(0))
-			maxDexterityBonus = adjustment;
+	public void deactivateAdjustment(int id) {
+		armorBonus.removeAdjust(id);
+		shieldBonus.removeAdjust(id);
+		enhancementBonus.removeAdjust(id);
+		deflectionBonus.removeAdjust(id);
+		naturalArmor.removeAdjust(id);
+		dodgeBonus.removeAdjust(id);
+		armorCheckPenalty.removeAdjust(id);
+		arcaneSpellFailure.removeAdjust(id);
+		maxDexterityBonus.removeAdjust(id);
 	}
 	
 	public int getArmor() {
-		if (armorBonus == null)
-			return 0;
-		return armorBonus.applyAdjustment(0);
+		return armorBonus.getScore();
 	}
 	public int getShield() {
-		if (shieldBonus == null)
-			return 0;
-		return shieldBonus.applyAdjustment(0);
+		return shieldBonus.getScore();
 	}
 	public int getEnhancement() {
-		if (enhancementBonus == null)
-			return 0;
-		return enhancementBonus.applyAdjustment(0);
+		return enhancementBonus.getScore();
 	}
 	public int getDeflection() {
-		if (deflectionBonus == null)
-			return 0;
-		return deflectionBonus.applyAdjustment(0);
+		return deflectionBonus.getScore();
 	}
 	public int getNaturalArmor() {
-		if (naturalArmor == null)
-			return 0;
-		return naturalArmor.applyAdjustment(0);
+		return naturalArmor.getScore();
 	}
 	public int getDodge() {
-		int total = 0;
-		for(Adjust adjust : dodgeBonuses)
-			total += adjust.applyAdjustment(0);
-		return total;
+		return dodgeBonus.getScore();
 	}
 	
 	public int getDexterityBonus() {
-		if (dexterity.getMod() <= 0)
-			return dexterity.getMod();
-		if (maxDexterityBonus == null)
-			return dexterity.getMod();
-		return (dexterity.getMod() > maxDexterityBonus.applyAdjustment(0) ? 
-				maxDexterityBonus.applyAdjustment(0) : dexterity.getMod());
+		return Math.min(this.maxDexterityBonus.getScore(), this.dexterity.getMod());
 	}
 
 	public int getAC() {
@@ -137,6 +115,16 @@ public class Armor {
 				+ (getDexterityBonus() < 0 ? getDexterityBonus() : 0);
 	}
 
+	public int getCMD() {
+		return getAC() + 2*size.getScore() + strength.getMod();
+	}
+	public int getTouchCMD() {
+		return getTouch() + 2*size.getScore() + strength.getMod();
+	}
+	public int getFlatFootedCMD() {
+		return getFlatFooted() + 2*size.getScore() + strength.getMod();
+	}
+	
 	public String toString() {
 		StringBuilder str = new StringBuilder();
 		str.append("AC: " + getAC());

@@ -10,7 +10,7 @@ public class Details {
 	public char gender;
 	private Adjustment race;
 	private Adjustment[] classes;
-	private int size;
+	Stat size;
 	public String favoredClass;
 	private int[] favoredClassBonuses;
 	private int level;
@@ -24,7 +24,7 @@ public class Details {
 	public Details(String name, char gender, String size, String favoredClass, String type) {
 		this.name = name;
 		this.gender = gender;
-		this.size = decodeSize(size);
+		this.size = new Stat(decodeSize(size));
 		this.favoredClass = favoredClass;
 		this.favoredClassBonuses = new int[20];
 		this.classes = new Adjustment[20];
@@ -71,11 +71,11 @@ public class Details {
 	}
 	
 	public int getSize() {
-		return size;
+		return size.getScore();
 	}
 	
 	public void setSize(String newSize) {
-		this.size = decodeSize(newSize);
+		this.size.setBase(decodeSize(newSize));
 	}
 	
 	public Adjustment addLevel(boolean favoredClass, int bonus) {

@@ -23,13 +23,34 @@ public class Health {
 		nonLethalDamage = 0;
 	}
 	
+	public void heal(int health) {
+		lethalDamage -= health;
+		if (lethalDamage < 0) {
+			nonLethalDamage += lethalDamage;
+			lethalDamage = 0;
+			if (nonLethalDamage < 0)
+				nonLethalDamage = 0;
+		}
+	}
+	
 	public void addHitDice(Adjust adjustment) {
 		adjustments.add(adjustment);
 		hitDice++;
 	}
 	
-	public void addHealthAdjust(Adjust adjustment) {
+	public void addAdjust(Adjust adjustment) {
 		adjustments.add(adjustment);
+	}
+	
+	public void removeAdjust(int id) {
+		int i = 0;
+		while (i < adjustments.size()) {
+			if (adjustments.get(i).isID(id)) {
+				adjustments.remove(i);
+				continue;
+			}
+			i++;
+		}
 	}
 	
 	public int getMaxHealth() {
