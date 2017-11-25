@@ -9,6 +9,8 @@ public class Adjustment {
 	String description;
 	List<Adjust> adjustments;
 	boolean active;
+	List<Attack> attacks;
+	List<Special> specialAttacks;
 	
 	public Adjustment(int id) {
 		this.id = id;
@@ -16,6 +18,8 @@ public class Adjustment {
 		description = "";
 		adjustments = new ArrayList<Adjust>();
 		active = true;
+		attacks = new ArrayList<Attack>();
+		specialAttacks = new ArrayList<Special>();
 	}
 	
 	public String getName() {
@@ -76,6 +80,17 @@ public class Adjustment {
 		str.append(description);
 		for (Adjust adjust : adjustments) {
 			str.append("\n" + adjust);
+		}
+		if (attacks.size() > 0) {
+			str.append("\nAttacks:");
+			for (Attack attack : attacks)
+				str.append("\n" + attack.toString());
+		}
+		if (specialAttacks.size() > 0) {
+			str.append("\nSpecial Attacks:");
+			for (Special special : specialAttacks) {
+				str.append("\n" + special.name);
+			}
 		}
 		return str.toString();
 	}

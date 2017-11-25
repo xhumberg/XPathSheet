@@ -7,16 +7,14 @@ public class Character {
 	private Abilities abilities;
 	private Skills skills;
 	private Details character;
+	private Offense offense;
 	
-	private Skill initiative;
 	private Armor AC;
 	private Health HP;
 	private Skill fortSave;
 	private Skill refSave;
 	private Skill willSave;
-	Stat BAB;
 	private Equipment equipment;
-	private List<Attack> attacks;
 	private Spellstuffs spells;
 	
 	/*

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Attack {
+	int id;
 	boolean melee;
 	String name;
 	List<Dice> damageDice;
@@ -15,16 +16,16 @@ public class Attack {
 	List<Adjust> attackAdjustments;
 	List<Adjust> damageAdjustments;
 	
-	public Attack(String type, Stat attack, int critLow, int critMultiplier, Stat BAB, String dice, String damageType, String name) {
-		this(type, attack, null, critLow, critMultiplier, BAB, dice, damageType, name);
+	public Attack(int id, String type, Stat attack, int critLow, int critMultiplier, Stat BAB, String dice, String damageType, String name) {
+		this(id, type, attack, null, critLow, critMultiplier, BAB, dice, damageType, name);
 	}
 	
-	public Attack(String type, Stat attack, Stat damage, int critLow, int critMultiplier, Stat BAB, String dice, String damageType, String name) {
+	public Attack(int id, String type, Stat attack, Stat damage, int critLow, int critMultiplier, Stat BAB, String dice, String damageType, String name) {
 		if (type.toLowerCase().equals("melee"))
 			melee = true;
 		else
 			melee = false;
-		
+		this.id = id;
 		this.critMultiplier = critMultiplier;
 		this.name = name;
 		this.attack = attack;
@@ -74,6 +75,9 @@ public class Attack {
 		}
 		if (dam == 0) {
 			result = result.substring(0, result.length() - 3);
+		} else if (dam < 0) {
+			result = result.substring(0, result.length() - 2);
+			result += "- " + (-dam);
 		} else
 			result += dam + "";
 		return result;
