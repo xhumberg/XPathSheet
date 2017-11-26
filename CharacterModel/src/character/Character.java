@@ -1,8 +1,5 @@
 package character;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class Character {
 	private Abilities abilities;
 	private Skills skills;
@@ -106,14 +103,20 @@ public class Character {
 //			str.append(spells.listPrepared());
 //		}
 		
-		
 		str.append("\n" + line() + "\n");
 		str.append("STATISTICS" + "\n");
 		str.append(line() + "\n");
 		str.append(abilities + "\n");
 		str.append("Feats: ");
 		str.append(character.featList() + "\n");
-		str.append(skills + "\n");
+		str.append(skills.toString() + "\n");
+		str.append("Languages: " + character.languages.toString().substring(1, character.languages.toString().length()-1));
+		str.append("\n" + line() + "\n");
+		str.append("SPECIALS\n");
+		str.append(line() + "\n");
+		for (Special special : character.specials) {
+			str.append(special + "\n");
+		}
 		return str.toString();
 	}
 	private String getClassString() {
@@ -146,18 +149,21 @@ public class Character {
 	private String line() {
 		return "----------------------------------------";
 	}
-
+	
+	public void activateAdjustment(Adjustment adjustment) {
+		abilities.activateAdjustment(adjustment);
+		character.activateAdjustment(adjustment);
+		skills.activateAdjustment(adjustment);
+		offense.activateAdjustment(adjustment);
+		defense.activateAdjustment(adjustment);
+		if (spells != null)
+			spells.activateAdjustment(adjustment);
+	}
 	public void deactivateAdjustment(int id) {
 		// TODO Auto-generated method stub
 		
 	}
 
-	public void activateAdjustment(Adjustment adjustment) {
-		abilities.activateAdjustment(adjustment);
-		skills.activateAdjustment(adjustment);
-		offense.activateAdjustment(adjustment);
-		defense.activateAdjustment(adjustment);
-	}
 	public void setName(String name) {
 		character.name = name;
 	}
@@ -170,7 +176,49 @@ public class Character {
 	public void setType(String type) {
 		character.type = type;
 	}
+	public Skill skill(String skill) {
+		return skills.getSkill(skill);
+	}
+	public Stat BAB() {
+		return offense.BAB;
+	}
+	public void setSize(String size) {
+		character.setSize(size);
+	}
+	public void setSpeed(int speed) {
+		offense.landSpeed.setBase(speed);
+	}
+	public void addLanguage(String language) {
+		character.languages.add(language);
+	}
+	public Adjustment newEffect(String name) {
+		Adjustment newAdjustment = character.addEffect();
+		newAdjustment.name = name;
+		return newAdjustment;
+	}
+	public Adjustment addLevel(boolean favoredClass, int bonus) {
+		return character.addLevel(favoredClass, bonus);
+	}
+	public void classSkill(String skill) {
+		skills.classSkill(skill);
+	}
+	static String wordWrap(String temp, String seperator, int charsPerLine) {
+		StringBuilder sb = new StringBuilder(temp);
+		int i = 0;
+		while (i + charsPerLine < sb.length() && (i = sb.lastIndexOf(seperator, i + charsPerLine)) != -1) {
+		    sb.replace(i, i + 1, "\n");
+			for (int j = 1; j < seperator.length(); j++)
+				sb.replace(i+j, i+j+1, "");
+		}
 
+		return sb.toString();
+	}
+	public Stat level() {
+		return character.level;
+	}
+	public void activateSpellcasting(Stat ability, boolean spontaneous) {
+		spells = new Spellstuffs(ability, spontaneous);
+	}
 
 
 

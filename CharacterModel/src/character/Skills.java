@@ -1,5 +1,8 @@
 package character;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Skills {
 	private Stat strength;
 	private Stat dexterity;
@@ -45,6 +48,7 @@ public class Skills {
 	private Skill survival;
 	private Skill swim;
 	private Skill useMagicDevice;
+	List<Special> skillSpecials;
 	
 	public Skills(Abilities abilities) {
 		strength = abilities.get("str");
@@ -52,6 +56,7 @@ public class Skills {
 		intelligence = abilities.get("int");
 		wisdom = abilities.get("wis");
 		charisma = abilities.get("cha");
+		skillSpecials = new ArrayList<Special>();
 		initialize();
 	}
 	
@@ -222,6 +227,14 @@ public class Skills {
 		survival.removeAdjust(id);
 		swim.removeAdjust(id);
 		useMagicDevice.removeAdjust(id);
+		int i = 0;
+		while (i < skillSpecials.size()) {
+			if (skillSpecials.get(i).getID() == id) {
+				skillSpecials.remove(i);
+				continue;
+			}
+			i++;
+		}
 	}
 	
 	public void activateAdjustment(Adjustment adjustment) {
@@ -234,49 +247,79 @@ public class Skills {
 				continue;
 			}
 		}
+		for (Special special : adjustment.skillSpecials) {
+			skillSpecials.add(special);
+		}
 	}
 
 	public String toString() {
 		StringBuilder str = new StringBuilder();
-		str.append("Acrobatics: " + acrobatics + "  ");
-		str.append("Appraise: " + appraise + "  ");
-		str.append("Bluff: " + bluff + "  ");
-		str.append("Climb: " + climb + "  ");
-		str.append("Craft A: " + crafta + "  \n");
-		str.append("Craft B: " + craftb + "  ");
-		str.append("Diplomacy: " + diplomacy + "  ");
-		str.append("Disable Device: " + (disableDevice.getBonus() == -999 ? "No" : disableDevice) + "  ");
-		str.append("Disguise: " + disguise + "  \n");
-		str.append("Escape Artist: " + escapeArtist + "  ");
-		str.append("Fly: " + fly + "  ");
-		str.append("Handle Animal: " + (handleAnimal.getBonus() == -999 ? "No" : handleAnimal) + "  ");
-		str.append("Heal: " + heal + "  \n");
-		str.append("Intimidate: " + intimidate + "  ");
-		str.append("Knowledge(Arcana): " + (knowledgeArcana.getBonus() == -999 ? "No" : knowledgeArcana) + "  ");
-		str.append("Knowledge(Dungeoneering): " + (knowledgeDungeoneering.getBonus() == -999 ? "No" : knowledgeDungeoneering) + "  \n");
-		str.append("Knowledge(Engineering): " + (knowledgeEngineering.getBonus() == -999 ? "No" : knowledgeEngineering) + "  ");
-		str.append("Knowledge(Geography): " + (knowledgeGeography.getBonus() == -999 ? "No" : knowledgeGeography) + "  ");
-		str.append("Knowledge(History): " + (knowledgeHistory.getBonus() == -999 ? "No" : knowledgeHistory) + "  \n");
-		str.append("Knowledge(Local): " + (knowledgeLocal.getBonus() == -999 ? "No" : knowledgeLocal) + "  ");
-		str.append("Knowledge(Nature): " + (knowledgeNature.getBonus() == -999 ? "No" : knowledgeNature) + "  ");
-		str.append("Knowledge(Nobility): " + (knowledgeNobility.getBonus() == -999 ? "No" : knowledgeNobility) + "  \n");
-		str.append("Knowledge(Planes): " + (knowledgePlanes.getBonus() == -999 ? "No" : knowledgePlanes) + "  ");
-		str.append("Knowledge(Religion): " + (knowledgeReligion.getBonus() == -999 ? "No" : knowledgeReligion) + "  ");
-		str.append("Linguistics: " + (linguistics.getBonus() == -999 ? "No" : linguistics) + "  \n");
-		str.append("Perception: " + perception + "  ");
-		str.append("Perform A: " + performa + "  ");
-		str.append("Perform B: " + performb + "  ");
-		str.append("Profession A: " + (professiona.getBonus() == -999 ? "No" : professiona) + "  ");
-		str.append("Profession B: " + (professionb.getBonus() == -999 ? "No" : professionb) + "  \n");
-		str.append("Profession C: " + (professionc.getBonus() == -999 ? "No" : professionc) + "  ");
-		str.append("Ride: " + ride + "  ");
-		str.append("Sense Motive: " + senseMotive + "  ");
-		str.append("Sleight of Hand: " + (sleightOfHand.getBonus() == -999 ? "No" : sleightOfHand) + "  ");
-		str.append("Spellcraft: " + (spellcraft.getBonus() == -999 ? "No" : spellcraft) + "  \n");
-		str.append("Stealth: " + stealth + "  ");
-		str.append("Survival: " + survival + "  ");
-		str.append("Swim: " + swim + "  ");
-		str.append("Use Magic Device: " + (useMagicDevice.getBonus() == -999 ? "No" : useMagicDevice) + "  ");
+		str.append(skillString("Acrobatics", acrobatics));
+		str.append(skillString("Appraise",appraise));
+		str.append(skillString("Bluff",bluff));
+		str.append(skillString("Climb",climb));
+		str.append(skillString("Craft A",crafta));
+		str.append(skillString("Craft B",craftb));
+		str.append(skillString("Diplomacy",diplomacy));
+		str.append(skillString("Disable Device",disableDevice));
+		str.append(skillString("Disguise",disguise));
+		str.append(skillString("Escape Artist",escapeArtist));
+		str.append(skillString("Fly",fly));
+		str.append(skillString("Handle Animal",handleAnimal));
+		str.append(skillString("Heal",heal));
+		str.append(skillString("Intimidate",intimidate));
+		str.append(skillString("Knowledge(Arcana)",knowledgeArcana));
+		str.append(skillString("Knowledge(Dungeoneering)",knowledgeDungeoneering));
+		str.append(skillString("Knowledge(Engineering)",knowledgeEngineering));
+		str.append(skillString("Knowledge(Geography)",knowledgeGeography));
+		str.append(skillString("Knowledge(History)",knowledgeHistory));
+		str.append(skillString("Knowledge(Local)",knowledgeLocal));
+		str.append(skillString("Knowledge(Nature)",knowledgeNature));
+		str.append(skillString("Knowledge(Nobility)",knowledgeNobility));
+		str.append(skillString("Knowledge(Planes)",knowledgePlanes));
+		str.append(skillString("Knowledge(Religion)",knowledgeReligion));
+		str.append(skillString("Linguistics",linguistics));
+		str.append(skillString("Perception",perception));
+		str.append(skillString("Perform A",performa));
+		str.append(skillString("Perform B",performb));
+		str.append(skillString("Profession A",professiona));
+		str.append(skillString("Profession B",professionb));
+		str.append(skillString("Profession C",professionc));
+		str.append(skillString("Ride",ride));
+		str.append(skillString("Sense Motive",senseMotive));
+		str.append(skillString("Sleight of Hand",sleightOfHand));
+		str.append(skillString("Spellcraft: ", spellcraft));
+		str.append(skillString("Stealth: ",stealth));
+		str.append(skillString("Survival: ",survival));
+		str.append(skillString("Swim: ",swim));
+		str.append(skillString("Use Magic Device: ",useMagicDevice));
+		str = new StringBuilder(Character.wordWrap(str.toString(), "  ", 80));
+		for (Special special : skillSpecials) {
+			str.append("\n" + special);
+		}
 		return str.toString();
+	}
+	
+	private String skillString(String name, Skill skill) {
+		if (skill.getBonus() == 0 || skill.getBonus() == -999)
+			return "";
+		else
+			return (name + (skill.isClassSkill() ? "*" : "") + ": " + skill + "  ");
+	}
+
+	public void classSkill(String skill) {
+		if (skill.toLowerCase().equals("craft")) {
+			crafta.makeClassSkill();
+			craftb.makeClassSkill();
+		} else if (skill.toLowerCase().equals("perform")) {
+			performa.makeClassSkill();
+			performb.makeClassSkill();
+		} else if (skill.toLowerCase().equals("profession")) {
+			professiona.makeClassSkill();
+			professionb.makeClassSkill();
+			professionc.makeClassSkill();
+		} else {
+			this.getSkill(skill).makeClassSkill();
+		}
 	}
 }

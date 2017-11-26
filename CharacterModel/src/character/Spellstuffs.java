@@ -28,10 +28,6 @@ public class Spellstuffs {
 		this.casterStat = casterStat;
 	}
 	
-	public void addAdjustNumSpells(int spellLevel, Adjust adjustment) {
-		numSpells[spellLevel].addAdjust(adjustment);
-	}
-	
 	public void addSpellKnown(Spell spell) {
 		spellsKnown.add(spell);
 	}
@@ -41,7 +37,7 @@ public class Spellstuffs {
 			if (spell.name.toLowerCase().equals(name.toLowerCase()))
 				return spell;
 		}
-		throw new RuntimeException("Spell " + name + " doesn't exist in list you're searching");
+		throw new RuntimeException("Spell " + name + " doesn't exist in spels known");
 	}
 	
 	public void prepareSpell(String spellName) {
@@ -55,7 +51,6 @@ public class Spellstuffs {
 			numUsedSpells[prep.level]++;
 		}
 	}
-	
 	public void castSpell(String spellName) {
 		if (this.isPreparedCaster) {
 			Spell used = getSpell(spellName, spellsPrepared);
@@ -68,25 +63,105 @@ public class Spellstuffs {
 		}
 	}
 
-	public String listPrepared() {
-		return list(spellsPrepared);
+	public void activateAdjustment(Adjustment adjustment) {
+		for (Adjust adjust : adjustment.adjustments) {
+			switch (adjust.getWhatAdjust().toLowerCase()) {
+			case "0th level spells per day":
+			case "l0 spd":
+			case "level 0 spells per day":
+			case "cantrips":
+				numSpells[0].addAdjust(adjust);
+				continue;
+			case "1st level spells per day":
+			case "l1 spd":
+			case "level 1 spells per day":
+				numSpells[1].addAdjust(adjust);
+				continue;
+			case "2st level spells per day":
+			case "l2 spd":
+			case "level 2 spells per day":
+				numSpells[2].addAdjust(adjust);
+				continue;
+			case "3st level spells per day":
+			case "l3 spd":
+			case "level 3 spells per day":
+				numSpells[3].addAdjust(adjust);
+				continue;
+			case "4th level spells per day":
+			case "l4 spd":
+			case "level 4 spells per day":
+				numSpells[4].addAdjust(adjust);
+				continue;
+			case "5th level spells per day":
+			case "51 spd":
+			case "level 5 spells per day":
+				numSpells[5].addAdjust(adjust);
+				continue;
+			case "6th level spells per day":
+			case "l6 spd":
+			case "level 6 spells per day":
+				numSpells[6].addAdjust(adjust);
+				continue;
+			case "7th level spells per day":
+			case "l7 spd":
+			case "level 7 spells per day":
+				numSpells[7].addAdjust(adjust);
+				continue;
+			case "8th level spells per day":
+			case "l8 spd":
+			case "level 8 spells per day":
+				numSpells[8].addAdjust(adjust);
+				continue;
+			case "9th level spells per day":
+			case "l9 spd":
+			case "level 9 spells per day":
+				numSpells[9].addAdjust(adjust);
+				continue;
+			}
+		}
 	}
 	
+	public void deactivateAdjustment(int id) {
+		for (Stat spellsPerDay : numSpells)
+			spellsPerDay.removeAdjust(id);
+	}
+	
+	public String toString() {
+		if (this.isPreparedCaster)
+			return list(spellsPrepared);
+		else {
+			return list(spellsKnown);
+		}
+	}
 	private String list(List<Spell> spells) {
+		//Seperate Spells into correct Levels
+		ArrayList<ArrayList<Spell>> spellLevels = new ArrayList<ArrayList<Spell>>();
+		for (int i = 0; i < 10; i++)
+			spellLevels.add(new ArrayList<Spell>());
+		for (Spell spell : spells) {
+			spellLevels.get(spell.level).add(spell);
+		}
+		
+		//Now make the string
 		StringBuilder str = new StringBuilder();
-		for(Spell spell : spells) {
-			str.append(spell.name);
-			if (!(spell.save.toLowerCase().equals("none") || spell.save.toLowerCase().equals("harmless"))) {
-				str.append(getSpellDC(spell.level));
+		for (int i = 0; i < 10; i++) {
+			if (spellLevels.isEmpty())
+				break;
+			str.append("Level " + i + ":\n");
+			for (Spell spell : spellLevels.get(i)) {
+				str.append(spell.name);
+				if (!(spell.save.toLowerCase().equals("harmless") || spell.save.toLowerCase().equals("no")))
+					str.append(getSpellDC(i));
+				str.append(", ");
 			}
-			str.append(", ");
+			str = str.replace(str.length()-2, str.length(), "");
 		}
 		if (str.length() > 3) {
 			return str.substring(0, str.length() - 2);
 		}
 		return str.toString();
 	}
-
+	//TODO: Adjustable. DCs can go up and down pretty easilty
 	private String getSpellDC(int level) {
 		return " (DC " + (10 + level + casterStat.getMod()) + ")";
 	}

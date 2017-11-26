@@ -14,4 +14,8 @@ public class Special {
 	public int getID() {
 		return id;
 	}
+	
+	public String toString() {
+		return id + " - " + name + ": " + description;
+	}
 }

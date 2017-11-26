@@ -1,11 +1,15 @@
 package character;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Defense {
 	Armor AC;
 	Health HP;
 	Skill fortSave;
 	Skill refSave;
 	Skill willSave;
+	List<Special> defenseSpecials;
 	
 	public Defense(Abilities abilities, Details details) {
 		AC = new Armor(details.size, abilities.get("dex"), abilities.get("str"));
@@ -13,6 +17,7 @@ public class Defense {
 		fortSave = new Skill(abilities.get("con"), false);
 		refSave = new Skill(abilities.get("dex"), false);
 		willSave = new Skill(abilities.get("wis"), false);
+		defenseSpecials = new ArrayList<Special>();
 	}
 	
 	public void activateAdjustment(Adjustment adjustment) {
@@ -38,7 +43,16 @@ public class Defense {
 			case "will save":
 				willSave.addAdjust(adjust);
 				continue;
+			case "saving throws":
+			case "saves":
+				fortSave.addAdjust(adjust);
+				willSave.addAdjust(adjust);
+				refSave.addAdjust(adjust);
+				continue;
 			}
+		}
+		for (Special special : adjustment.defenseSpecials) {
+			defenseSpecials.add(special);
 		}
 	}
 	
@@ -48,6 +62,14 @@ public class Defense {
 		fortSave.removeAdjust(id);
 		refSave.removeAdjust(id);
 		willSave.removeAdjust(id);
+		int i = 0;
+		while (i < defenseSpecials.size()) {
+			if (defenseSpecials.get(i).getID() == id) {
+				defenseSpecials.remove(i);
+				continue;
+			}
+			i++;
+		}
 	}
 	
 	public String toString() {
@@ -61,6 +83,9 @@ public class Defense {
 		str.append(", Will: ");
 		str.append(willSave.getBonus());
 		str.append("\n");
+		for (Special special : defenseSpecials) {
+			str.append(Character.wordWrap(special.toString(), " ", 180) + "\n");
+		}
 		return str.toString();
 	}
 }

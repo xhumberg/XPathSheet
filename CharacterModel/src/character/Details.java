@@ -13,13 +13,15 @@ public class Details {
 	Stat size;
 	public String favoredClass;
 	private int[] favoredClassBonuses;
-	private int level;
+	Stat level;
 	public String type;
 	private List<Adjustment> feats;
 	private int currentFeat;
 	private List<Adjustment> effects;
 	private int currentEffect;
-	private List<Special> senses;
+	List<Special> senses;
+	public List<String> languages;
+	List<Special> specials;
 	
 	public Details(String name, char gender, String size, String favoredClass, String type) {
 		this.name = name;
@@ -28,7 +30,7 @@ public class Details {
 		this.favoredClass = favoredClass;
 		this.favoredClassBonuses = new int[20];
 		this.classes = new Adjustment[20];
-		level = 0;
+		level = new Stat(0);
 		race = new Adjustment(0);
 		this.type = type;
 		feats = new ArrayList<Adjustment>();
@@ -36,6 +38,8 @@ public class Details {
 		currentFeat = 21;
 		currentEffect = 121;
 		senses = new ArrayList<Special>();
+		languages = new ArrayList<String>();
+		specials = new ArrayList<Special>();
 	}
 
 	private int decodeSize(String size) {
@@ -79,11 +83,12 @@ public class Details {
 	}
 	
 	public Adjustment addLevel(boolean favoredClass, int bonus) {
-		classes[level] = new Adjustment(level+1);
+		classes[level.getBase()] = new Adjustment(level.getBase()+1);
 		if (favoredClass) {
-			favoredClassBonuses[level] = bonus;
+			favoredClassBonuses[level.getBase()] = bonus;
 		}
-		return classes[level++];
+		level.setBase(level.getBase()+1);
+		return classes[level.getBase()-1];
 	}
 
 	public Adjustment getFeat(String name) {
@@ -124,6 +129,25 @@ public class Details {
 		senses.add(new Special(id, sense, ""));
 	}
 	
+	public void removeSenses(int id) {
+		removeSpecial(id, senses);
+	}
+	
+	public void removeSpecial(int id) {
+		removeSpecial(id, specials);
+	}
+	
+	private void removeSpecial(int id, List<Special> special) {
+		int i = 0;
+		while (i < special.size()) {
+			if (special.get(i).getID() == id) {
+				special.remove(i);
+				continue;
+			}
+			i++;
+		}
+	}
+
 	public String getSenses() {
 		StringBuilder str = new StringBuilder();
 		for (Special sense : senses) {
@@ -135,7 +159,7 @@ public class Details {
 	}
 
 	public int getLevel() {
-		return level;
+		return level.getBase();
 	}
 	
 	public String getClassesString() {
@@ -204,5 +228,17 @@ public class Details {
 		if (str.length() > 2)
 			return str.substring(0, str.length()-2);
 		return str.toString();
+	}
+
+	public void activateAdjustment(Adjustment adjustment) {
+		for (Special special : adjustment.specials)
+			specials.add(special);
+		for (Special sense : adjustment.senses)
+			senses.add(sense);
+	}
+	
+	public void deactivateAdjustment(int id) {
+		this.removeSenses(id);
+		this.removeSpecial(id);
 	}
 }

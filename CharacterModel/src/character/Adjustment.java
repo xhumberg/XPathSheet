@@ -11,6 +11,10 @@ public class Adjustment {
 	boolean active;
 	List<Attack> attacks;
 	List<Special> specialAttacks;
+	List<Special> senses;
+	List<Special> specials;
+	List<Special> skillSpecials;
+	List<Special> defenseSpecials;
 	
 	public Adjustment(int id) {
 		this.id = id;
@@ -20,6 +24,10 @@ public class Adjustment {
 		active = true;
 		attacks = new ArrayList<Attack>();
 		specialAttacks = new ArrayList<Special>();
+		senses = new ArrayList<Special>();
+		specials = new ArrayList<Special>();
+		skillSpecials = new ArrayList<Special>();
+		defenseSpecials = new ArrayList<Special>();
 	}
 	
 	public String getName() {
@@ -96,5 +104,39 @@ public class Adjustment {
 		active = true;
 		if (character != null)
 			character.activateAdjustment(this);
+	}
+
+	public void addAttack(Stat attack, Stat damage, Stat BAB, String damageDice, String damageType, String name) {
+		addAttack("Melee", attack, damage, 20, 2, BAB, damageDice, damageType, name);
+	}
+	
+	public void addAttack(String type, Stat attack, Stat damage, int critLow, int critMult, Stat BAB, String damageDice,
+			String damageType, String name) {
+		Attack newAttack = new Attack(id, type, attack, damage, critLow, critMult, BAB, damageDice, damageType, name);
+		attacks.add(newAttack);
+	}
+
+	public void addSense(String sense) {
+		Special newSense = new Special(id, sense, "");
+		senses.add(newSense);
+	}
+
+	public void addSpecial(String name, String description) {
+		Special newSpecial = new Special(id, name, description);
+		specials.add(newSpecial);
+	}
+
+	public void addSkillSpecial(String name, String description) {
+		Special newSpecial = new Special(id, name, description);
+		skillSpecials.add(newSpecial);
+	}
+
+	public void addAdjust(String whatAdjust, String howAdjust, Stat ability, String partOfStat, double d, int min) {
+		adjustments.add(new StatAdjust(whatAdjust, id, decodeType(howAdjust), ability, partOfStat, d, min));
+	}
+
+	public void addDefenseSpecial(String name, String description) {
+		Special newSpecial = new Special(id, name, description);
+		defenseSpecials.add(newSpecial);
 	}
 }
