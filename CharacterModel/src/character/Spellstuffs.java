@@ -26,8 +26,20 @@ public class Spellstuffs {
 			spellNumber.setBase(0);
 		}
 		this.casterStat = casterStat;
+		recalculate();
 	}
 	
+	private void recalculate() {
+		for (int spellLevel = 1; spellLevel < 10; spellLevel++) {
+			int baseCalc = 0;
+			if (numSpells[spellLevel].getScore() <= 0)
+				continue;
+			for (int i = spellLevel; i <= casterStat.getMod(); i+=4)
+				baseCalc++;
+			numSpells[spellLevel].setBase(baseCalc);
+		}
+	}
+
 	public void addSpellKnown(Spell spell) {
 		spellsKnown.add(spell);
 	}
@@ -119,6 +131,7 @@ public class Spellstuffs {
 				continue;
 			}
 		}
+		recalculate();
 	}
 	
 	public void deactivateAdjustment(int id) {
@@ -145,7 +158,7 @@ public class Spellstuffs {
 		//Now make the string
 		StringBuilder str = new StringBuilder();
 		for (int i = 0; i < 10; i++) {
-			if (spellLevels.isEmpty())
+			if (spellLevels.get(i).isEmpty())
 				break;
 			str.append("Level " + i + ":\n");
 			for (Spell spell : spellLevels.get(i)) {
@@ -154,14 +167,11 @@ public class Spellstuffs {
 					str.append(getSpellDC(i));
 				str.append(", ");
 			}
-			str = str.replace(str.length()-2, str.length(), "");
-		}
-		if (str.length() > 3) {
-			return str.substring(0, str.length() - 2);
+			str = str.replace(str.length()-2, str.length(), "\n");
 		}
 		return str.toString();
 	}
-	//TODO: Adjustable. DCs can go up and down pretty easilty
+	//TODO: Adjustable. DCs can go up and down pretty easily
 	private String getSpellDC(int level) {
 		return " (DC " + (10 + level + casterStat.getMod()) + ")";
 	}

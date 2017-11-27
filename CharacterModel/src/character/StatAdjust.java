@@ -38,4 +38,9 @@ public class StatAdjust extends Adjust {
 		else return value;
 	}
 	
+	@Override
+	public String toString() {
+		return super.getWhatAdjust() + ": adjusted by stat";
+	}
+	
 }

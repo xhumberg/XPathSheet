@@ -6,13 +6,13 @@ public class Spell {
 	String school;
 	String duration;
 	String castTime;
-	int range;
+	String range;
 	String simpleDescription;
 	String save;
 	boolean spellResist;
 	String fullDescription;
 	
-	public Spell(String name, int level, String school, String duration, String castTime, int range, String simpleDescription, String save, boolean spellResist, String fullDescription) {
+	public Spell(String name, int level, String school, String duration, String castTime, String range, String simpleDescription, String save, boolean spellResist, String fullDescription) {
 		this.name = name;
 		this.level = level;
 		this.school = school;

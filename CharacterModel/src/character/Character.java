@@ -97,6 +97,7 @@ public class Character {
 		str.append("OFFENSE" + "\n");
 		str.append(line() + "\n");
 		str.append(offense + "\n");
+		str.append(spells + "\n");
 		
 //		str.append("Spells:\n");
 //		if (spells != null) {
@@ -115,7 +116,7 @@ public class Character {
 		str.append("SPECIALS\n");
 		str.append(line() + "\n");
 		for (Special special : character.specials) {
-			str.append(special + "\n");
+			str.append(wordWrap(special.toString(), " ", 180) + "\n");
 		}
 		return str.toString();
 	}
@@ -218,6 +219,15 @@ public class Character {
 	}
 	public void activateSpellcasting(Stat ability, boolean spontaneous) {
 		spells = new Spellstuffs(ability, spontaneous);
+	}
+	public void addSpell(Spell spell) {
+		spells.addSpellKnown(spell);
+	}
+	public void addHitDice(Adjust hitDice) {
+		defense.HP.addHitDice(hitDice);
+	}
+	public Adjustment addFeat() {
+		return character.addFeat();
 	}
 
 
