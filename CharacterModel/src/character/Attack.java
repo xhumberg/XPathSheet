@@ -13,8 +13,8 @@ public class Attack {
 	int critLow;
 	int critMultiplier;
 	Stat BAB;
-	List<Adjust> attackAdjustments;
-	List<Adjust> damageAdjustments;
+	Stat attackBonus;
+	Stat damageBonus;
 	
 	public Attack(int id, String type, Stat attack, int critLow, int critMultiplier, Stat BAB, String dice, String damageType, String name) {
 		this(id, type, attack, null, critLow, critMultiplier, BAB, dice, damageType, name);
@@ -33,8 +33,8 @@ public class Attack {
 		this.critLow = critLow;
 		this.BAB = BAB;
 		damageDice = new ArrayList<Dice>();
-		attackAdjustments = new ArrayList<Adjust>();
-		damageAdjustments = new ArrayList<Adjust>();
+		attackBonus = new Stat(0);
+		damageBonus = new Stat(0);
 		damageDice.add(new Dice(dice, damageType));
 	}
 	
@@ -44,9 +44,7 @@ public class Attack {
 	
 	public String getAttack() {
 		int atk = attack.getMod();
-		for(Adjust adjust : attackAdjustments) {
-			atk = adjust.applyAdjustment(atk);
-		}
+		atk += attackBonus.getScore();
 		String result = "";
 		int bab = BAB.getScore();
 		do {
@@ -70,9 +68,7 @@ public class Attack {
 			result += dice + " + ";
 		}
 		int dam = damage.getMod();
-		for (Adjust adjust : damageAdjustments) {
-			dam = adjust.applyAdjustment(dam);
-		}
+		dam += damageBonus.getScore();
 		if (dam == 0) {
 			result = result.substring(0, result.length() - 3);
 		} else if (dam < 0) {
@@ -81,14 +77,6 @@ public class Attack {
 		} else
 			result += dam + "";
 		return result;
-	}
-	
-	public void addAdjustAttack(Adjust adjustment) {
-		attackAdjustments.add(adjustment);
-	}
-
-	public void addAdjustDamage(Adjust adjustment) {
-		damageAdjustments.add(adjustment);
 	}
 	
 	public String toString() {

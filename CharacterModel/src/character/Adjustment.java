@@ -139,4 +139,8 @@ public class Adjustment {
 		Special newSpecial = new Special(id, name, description);
 		defenseSpecials.add(newSpecial);
 	}
+
+	public String simpleString() {
+		return name + ": " + description;
+	}
 }

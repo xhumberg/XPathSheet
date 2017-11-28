@@ -8,6 +8,8 @@ public class Offense {
 	private Stat size;
 	Skill initiative;
 	Stat BAB;
+	Stat attackBonus;
+	Stat damageBonus;
 	List<Attack> attacks;
 	Stat landSpeed;
 	Stat swimSpeed;
@@ -28,6 +30,8 @@ public class Offense {
 		flySpeed = new Stat(0);
 		climbSpeed = new Stat(0);
 		burrowSpeed = new Stat(0);
+		attackBonus = new Stat(0);
+		damageBonus = new Stat(0);
 	}
 	
 	public int CMB() {
@@ -55,7 +59,8 @@ public class Offense {
 		flySpeed.removeAdjust(id);
 		climbSpeed.removeAdjust(id);
 		burrowSpeed.removeAdjust(id);
-		
+		attackBonus.removeAdjust(id);
+		damageBonus.removeAdjust(id);
 	}
 
 	private void removeSpecials(int id) {
@@ -73,6 +78,12 @@ public class Offense {
 		deactivateAdjustment(adjustment.id);
 		for (Adjust adjust : adjustment.adjustments) {
 			switch(adjust.getWhatAdjust().toLowerCase()) {
+			case "attack":
+				attackBonus.addAdjust(adjust);
+				continue;
+			case "damage":
+				damageBonus.addAdjust(adjust);
+				continue;
 			case "initiative":
 				initiative.addAdjust(adjust);
 				continue;
@@ -103,9 +114,17 @@ public class Offense {
 		for (Special specialAttack : adjustment.specialAttacks) {
 			specialAttacks.add(specialAttack);
 		}
+		propogateBonuses();
 	}
 
 	
+	private void propogateBonuses() {
+		for (Attack attack : attacks) {
+			attack.attackBonus = attackBonus;
+			attack.damageBonus = damageBonus;
+		}
+	}
+
 	public int getInitiative() {
 		return initiative.getBonus();
 	}

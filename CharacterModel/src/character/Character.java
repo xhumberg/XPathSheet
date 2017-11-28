@@ -112,12 +112,21 @@ public class Character {
 		str.append(character.featList() + "\n");
 		str.append(skills.toString() + "\n");
 		str.append("Languages: " + character.languages.toString().substring(1, character.languages.toString().length()-1));
+		
 		str.append("\n" + line() + "\n");
 		str.append("SPECIALS\n");
 		str.append(line() + "\n");
 		for (Special special : character.specials) {
 			str.append(wordWrap(special.toString(), " ", 180) + "\n");
 		}
+		
+		str.append("\n" + line() + "\n");
+		str.append("ACTIVE EFFECTS\n");
+		str.append(line() + "\n");
+		for (Adjustment adjustment : character.effects) {
+			str.append(wordWrap(adjustment.simpleString(), " ", 180) + "\n");
+		}
+		
 		return str.toString();
 	}
 	private String getClassString() {

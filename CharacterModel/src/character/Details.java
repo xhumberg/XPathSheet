@@ -17,7 +17,7 @@ public class Details {
 	public String type;
 	private List<Adjustment> feats;
 	private int currentFeat;
-	private List<Adjustment> effects;
+	List<Adjustment> effects;
 	private int currentEffect;
 	List<Special> senses;
 	public List<String> languages;
