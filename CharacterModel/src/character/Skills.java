@@ -240,6 +240,48 @@ public class Skills {
 	public void activateAdjustment(Adjustment adjustment) {
 		deactivateAdjustment(adjustment.id);
 		for (Adjust adjust : adjustment.adjustments) {
+			if (adjust.getWhatAdjust().toLowerCase().equals("skills")) {
+				acrobatics.addAdjust(adjust);
+				appraise.addAdjust(adjust);
+				bluff.addAdjust(adjust);
+				climb.addAdjust(adjust);
+				crafta.addAdjust(adjust);
+				craftb.addAdjust(adjust);
+				diplomacy.addAdjust(adjust);
+				disableDevice.addAdjust(adjust);
+				disguise.addAdjust(adjust);
+				escapeArtist.addAdjust(adjust);
+				fly.addAdjust(adjust);
+				handleAnimal.addAdjust(adjust);
+				heal.addAdjust(adjust);
+				intimidate.addAdjust(adjust);
+				knowledgeArcana.addAdjust(adjust);
+				knowledgeDungeoneering.addAdjust(adjust);
+				knowledgeEngineering.addAdjust(adjust);
+				knowledgeGeography.addAdjust(adjust);
+				knowledgeHistory.addAdjust(adjust);
+				knowledgeLocal.addAdjust(adjust);
+				knowledgeNature.addAdjust(adjust);
+				knowledgeNobility.addAdjust(adjust);
+				knowledgePlanes.addAdjust(adjust);
+				knowledgeReligion.addAdjust(adjust);
+				linguistics.addAdjust(adjust);
+				perception.addAdjust(adjust);
+				performa.addAdjust(adjust);
+				performb.addAdjust(adjust);
+				professiona.addAdjust(adjust);
+				professionb.addAdjust(adjust);
+				professionc.addAdjust(adjust);
+				ride.addAdjust(adjust);
+				senseMotive.addAdjust(adjust);
+				sleightOfHand.addAdjust(adjust);
+				spellcraft.addAdjust(adjust);
+				stealth.addAdjust(adjust);
+				survival.addAdjust(adjust);
+				swim.addAdjust(adjust);
+				useMagicDevice.addAdjust(adjust);
+				continue;
+			}
 			try{
 				Skill addition = this.getSkill(adjust.getWhatAdjust());
 				addition.addAdjust(adjust);

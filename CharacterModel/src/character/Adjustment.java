@@ -21,7 +21,7 @@ public class Adjustment {
 		name = "No Name";
 		description = "";
 		adjustments = new ArrayList<Adjust>();
-		active = true;
+		active = false;
 		attacks = new ArrayList<Attack>();
 		specialAttacks = new ArrayList<Special>();
 		senses = new ArrayList<Special>();

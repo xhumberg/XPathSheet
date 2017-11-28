@@ -124,7 +124,14 @@ public class Character {
 		str.append("ACTIVE EFFECTS\n");
 		str.append(line() + "\n");
 		for (Adjustment adjustment : character.effects) {
-			str.append(wordWrap(adjustment.simpleString(), " ", 180) + "\n");
+			str.append(adjustment.active ? (wordWrap(adjustment.simpleString(), " ", 180) + "\n") : "");
+		}
+		
+		str.append("\n" + line() + "\n");
+		str.append("INACTIVE EFFECTS\n");
+		str.append(line() + "\n");
+		for (Adjustment adjustment : character.effects) {
+			str.append(!adjustment.active ? (wordWrap(adjustment.simpleString(), " ", 180) + "\n") : "");
 		}
 		
 		return str.toString();
