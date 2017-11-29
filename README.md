@@ -16,9 +16,11 @@ race.addAdjust("Str", "subtract", 2);
 ```
 
 Current allowed values are:
-| Abilities | Offense | Defense | Skills | Spellstuff | Other  |
-| --------- | ------- | --------| ------ | ---------- | ------ |
-| test1     | test2   | test3   | test4  | test5      | test6  |
+
+| First Header  | Second Header |
+| ------------- | ------------- |
+| Content Cell  | Content Cell  |
+| Content Cell  | Content Cell  |
 
 Adjustments also have the ability to add special, non-adjusting values to offense, defense, skill, and general values. These functions are `adjustment.addOffenseSpecial(String name, String description`, `adjustment.addDefenseSpecial(String name, String description`, `adjustment.addSkillSpecial(String name, String description`, and `adjustment.addSpecial(String name, String description`. A great example is what happens when a kitsune turns human. 
 
