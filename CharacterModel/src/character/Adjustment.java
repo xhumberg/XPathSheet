@@ -143,4 +143,9 @@ public class Adjustment {
 	public String simpleString() {
 		return name + ": " + description;
 	}
+	
+	public void addOffenseSpecial(String name, String description) {
+		Special newSpecial = new Special(id, name, description);
+		specialAttacks.add(newSpecial);
+	}
 }

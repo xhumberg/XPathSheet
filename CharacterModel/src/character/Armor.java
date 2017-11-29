@@ -46,6 +46,7 @@ public class Armor {
 				deflectionBonus.addAdjust(adjust);
 				continue;
 			case "natural armor":
+			case "na":
 				naturalArmor.addAdjust(adjust);
 				continue;
 			case "dodge":

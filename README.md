@@ -20,7 +20,7 @@ Current allowed values are:
 | Abilities | Offense | Defense | Skills | Spellstuff | Other  |
 | --------- | ------- | --------| ------ | ---------- | ------ |
 | Strength (STR) | Attack | HP | Skills | Cantrips | None yet |
-| Dexterity (DEX) | Damage | Fort save (Fort) | [Any non-knowledge, craft, perform, or profession skill] | L[1-9] SPD | |
+| Dexterity (DEX) | Damage | Fort save (Fort) | [Any skill that isn't knowledge, craft, perform, or profession] | L[1-9] SPD | |
 | Constitution (CON)| Initiative | Fortitude Save (Fortitude)| Craft [A, B] | [0th-9th] Level spells per day | |
 | Intelligence (INT) | BAB | Ref save (Ref) | Perform [A, B] | Level [0-9] spells per day | |
 | Wisdom (WIS) | Land speed (Speed) | Reflex save (Reflex) | Profession [A, B, C] | | |

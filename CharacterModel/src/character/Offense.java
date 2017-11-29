@@ -172,6 +172,10 @@ public class Offense {
 			if (!attack.isMelee())
 				str.append(attack + "\n");
 		}
+		
+		for (Special specialAttack : specialAttacks) {
+			str.append(Character.wordWrap(specialAttack.toString(), " ", 180) + "\n");
+		}
 		return str.toString();
 	}
 }
